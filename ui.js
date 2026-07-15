@@ -104,7 +104,10 @@ class UIRenderer {
     feedbackContainer.innerHTML = `
       <div class="feedback-card ${correct ? 'feedback-correct' : 'feedback-incorrect'}">
         <div class="feedback-header">
-          <span class="feedback-status">${correct ? '✓ Correct!' : '✗ Incorrect'}</span>
+          <span class="feedback-status">
+            <i data-lucide="${correct ? 'check-circle' : 'x-circle'}"></i>
+            ${correct ? 'Correct!' : 'Incorrect'}
+          </span>
         </div>
         <div class="feedback-body">
           <div class="feedback-explanation">
@@ -115,17 +118,42 @@ class UIRenderer {
             <strong>Correct Answer:</strong>
             <p>${correctOption.text}</p>
           </div>
+          ${this.renderSource(question.source)}
         </div>
       </div>
     `;
 
     feedbackContainer.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
 
     // Trigger animation
     feedbackContainer.style.animation = 'none';
     setTimeout(() => {
       feedbackContainer.style.animation = correct ? 'slideUp 0.4s ease' : 'shake 0.4s ease';
     }, 10);
+  }
+
+  /**
+   * Render the source citation for a question — a deep-link to the official
+   * source. Every question carries one (manual page or BMV sample test).
+   */
+  renderSource(source) {
+    if (!source || !source.url) return '';
+    let label;
+    if (source.badge === 'bmv-official-sample') {
+      label = 'Official Ohio BMV Sample Test';
+    } else if (source.pdf_page) {
+      label = `Ohio Driver Manual, p.${source.pdf_page}` +
+        (source.section ? ` — ${source.section}` : '');
+    } else {
+      label = source.document || 'Official source';
+    }
+    return `
+      <div class="feedback-source">
+        <i data-lucide="book-open"></i>
+        <a href="${source.url}" target="_blank" rel="noopener noreferrer">Source: ${label}</a>
+      </div>
+    `;
   }
 
   /**
@@ -398,33 +426,43 @@ class UIRenderer {
   }
 
   /**
-   * Render study mode categories
+   * Render study mode categories from the STUDY_CATEGORIES registry
+   * (data/study-categories.js). Renders all 9 topic-based categories; a
+   * category with 0 matching questions renders as a disabled shell so the
+   * taxonomy is always visible.
    */
   async renderStudyCategories(allQuestions) {
     const categoryList = document.getElementById('categoryList');
-    categoryMap = {};
-
-    allQuestions.forEach(q => {
-      if (!categoryMap[q.category]) categoryMap[q.category] = [];
-      categoryMap[q.category].push(q);
-    });
+    const groups = groupByStudyCategory(allQuestions);
 
     categoryList.innerHTML = '';
-    Object.entries(categoryMap).forEach(([category, questions]) => {
+    groups.forEach(group => {
+      const count = group.questions.length;
+      const empty = count === 0;
+
       const card = document.createElement('button');
-      card.className = 'category-card';
+      card.className = 'category-card' + (empty ? ' category-card-empty' : '');
+      card.disabled = empty;
       card.innerHTML = `
-        <div class="card-icon">${category === 'road-signs' ? '🚦' : '📋'}</div>
-        <div class="card-title">${category === 'road-signs' ? 'Road Signs' : 'Traffic Rules'}</div>
-        <div class="card-desc">${questions.length} questions</div>
+        <div class="card-icon"><i data-lucide="${group.icon}"></i></div>
+        <div class="card-title">${group.name}</div>
+        <div class="card-desc">${group.description}</div>
+        <div class="card-count">${empty ? 'Coming soon' : count + ' question' + (count === 1 ? '' : 's')}</div>
       `;
-      card.addEventListener('click', () => {
-        const session = quizEngine.createQuizSession(questions, 'study');
-        this.showView('quiz');
-        this.renderQuestion(session, 0);
-      });
+
+      if (!empty) {
+        card.addEventListener('click', () => {
+          const session = quizEngine.createQuizSession(group.questions, 'study');
+          session.startTime = Date.now();
+          this.showView('quiz');
+          this.renderQuestion(session, 0);
+        });
+      }
       categoryList.appendChild(card);
     });
+
+    // Re-render Lucide icons for the newly injected cards.
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /**
