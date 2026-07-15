@@ -233,12 +233,20 @@ html[data-theme="dark"] .resources-section p {
   color: var(--text-secondary);
 }
 
-html[data-theme="dark"] .resource-link {
+html[data-theme="dark"] .resource-link,
+html[data-theme="dark"] .resource-link:visited {
   background: var(--primary);
+  /* dark-mode --primary (#58a6ff) is light — use dark text for contrast */
+  color: #0d1117;
 }
 
 html[data-theme="dark"] .resource-link:hover {
   background: var(--primary-hover);
+  color: #0d1117;
+}
+
+html[data-theme="dark"] .resource-link i {
+  color: #0d1117;
 }
 
 /* Transition Animation for Theme Switch */
