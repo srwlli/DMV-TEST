@@ -1,0 +1,242 @@
+/* Dark Mode Stylesheet - OLED Friendly */
+
+html[data-theme="dark"] {
+  --primary: #58a6ff;
+  --primary-hover: #79c0ff;
+  --secondary: #8b949e;
+  --success: #3fb950;
+  --danger: #f85149;
+  --warning: #d29922;
+
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+
+  --text-primary: #e1e4e8;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+
+  --border-color: #30363d;
+  --border-light: #21262d;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="dark"] body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Header - Dark */
+html[data-theme="dark"] .app-header {
+  background: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .app-title {
+  color: var(--text-primary);
+}
+
+/* Buttons - Dark */
+html[data-theme="dark"] .home-card,
+html[data-theme="dark"] .category-card,
+html[data-theme="dark"] .sign-tile,
+html[data-theme="dark"] .question-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .option-button {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .option-button:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary);
+}
+
+html[data-theme="dark"] .option-button.selected {
+  border-color: var(--primary);
+  background: #0d2a47;
+}
+
+html[data-theme="dark"] .option-button.correct {
+  border-color: var(--success);
+  background: #0d2e1a;
+}
+
+html[data-theme="dark"] .option-button.incorrect {
+  border-color: var(--danger);
+  background: #2d1113;
+}
+
+/* Theme Toggle Indicator */
+html[data-theme="dark"] .theme-toggle::before {
+  content: "☀️";
+}
+
+html[data-theme="light"] .theme-toggle::before {
+  content: "🌙";
+}
+
+html[data-theme="dark"] .theme-icon {
+  display: none;
+}
+
+/* Background Colors - Dark */
+html[data-theme="dark"] .home-stats,
+html[data-theme="dark"] .feedback-container,
+html[data-theme="dark"] .stat-item,
+html[data-theme="dark"] .category-score-item,
+html[data-theme="dark"] .question-category {
+  background: var(--bg-tertiary);
+}
+
+html[data-theme="dark"] .menu-item,
+html[data-theme="dark"] .search-input,
+html[data-theme="dark"] .filter-select {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .search-input::placeholder,
+html[data-theme="dark"] .filter-select {
+  color: var(--text-secondary);
+}
+
+/* Modal - Dark */
+html[data-theme="dark"] .modal-content {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .modal {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Scrollbar - Dark */
+html[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color);
+}
+
+/* Special Cases */
+html[data-theme="dark"] .weak-areas {
+  background: rgba(248, 81, 73, 0.1);
+  border-color: var(--danger);
+}
+
+html[data-theme="dark"] .weak-areas-title {
+  color: var(--danger);
+}
+
+html[data-theme="dark"] .category-score-bar {
+  background: var(--bg-tertiary);
+}
+
+html[data-theme="dark"] .ring-bg {
+  stroke: var(--bg-tertiary);
+}
+
+html[data-theme="dark"] .ring-fill {
+  stroke: var(--primary);
+}
+
+html[data-theme="dark"] .question-image {
+  background: var(--bg-tertiary);
+}
+
+html[data-theme="dark"] .sign-image-small {
+  background: var(--bg-tertiary);
+}
+
+html[data-theme="dark"] .btn-ghost {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .btn-ghost:hover {
+  background: var(--bg-tertiary);
+}
+
+html[data-theme="dark"] .toast {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .spinner {
+  border-color: var(--bg-tertiary);
+  border-top-color: var(--primary);
+}
+
+/* Text Colors */
+html[data-theme="dark"] .question-text,
+html[data-theme="dark"] .card-title,
+html[data-theme="dark"] .category-name,
+html[data-theme="dark"] .option-text,
+html[data-theme="dark"] .option-label {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .subtitle,
+html[data-theme="dark"] .card-desc,
+html[data-theme="dark"] .question-number,
+html[data-theme="dark"] .category-stats,
+html[data-theme="dark"] .text-secondary,
+html[data-theme="dark"] .feedback-explanation {
+  color: var(--text-secondary);
+}
+
+/* Progress Ring */
+html[data-theme="dark"] .progress-ring {
+  background: conic-gradient(
+    var(--primary) 0deg,
+    var(--primary) calc(var(--progress, 0) * 3.6deg),
+    var(--bg-tertiary) calc(var(--progress, 0) * 3.6deg)
+  );
+}
+
+/* Link Colors */
+html[data-theme="dark"] a {
+  color: var(--primary);
+}
+
+html[data-theme="dark"] a:hover {
+  color: var(--primary-hover);
+}
+
+/* Focus States */
+html[data-theme="dark"] .btn:focus,
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Transition Animation for Theme Switch */
+html[data-theme] * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Ensure immediate theme change for certain elements */
+html[data-theme] body,
+html[data-theme] .app-container {
+  transition: background-color 0.2s ease;
+}
