@@ -1156,4 +1156,90 @@ const QUESTIONS = [
     explanation: 'Ohio’s mandatory safety belt law requires drivers and front-seat occupants of most passenger vehicles to wear safety belts.',
     source: manualSrc(9, 'Section 2 — Safety Restraints'),
   },
+
+  // ───────────── OFFICIAL BMV SAMPLE TEST (remaining, verbatim) ─────────────
+  // These are the official BMV sample-test questions carried in verbatim from
+  // https://www.bmv.ohio.gov/dl-sample-test.aspx. Each correct answer is also
+  // confirmed against the Ohio Driver Manual (HSY 7607). Together with row-006,
+  // alc-001 and con-001 elsewhere in this file, this covers 9 of the 10 official
+  // sample questions. (The 10th — the four-lane school-bus question — is held
+  // out: the BMV sample key conflicts with ORC 4511.75 / the manual.)
+  {
+    id: 'bmv-002', category: 'traffic-rules', subcategory: 'traffic-signals', difficulty: 'easy',
+    text: 'A flashing red traffic signal at an intersection has the same requirements as which of the following?',
+    image_url: null,
+    options: [
+      { id: 'a', text: 'A slow sign', correct: false },
+      { id: 'b', text: 'A yield sign', correct: false },
+      { id: 'c', text: 'A stop sign', correct: true },
+      { id: 'd', text: 'An intersection sign', correct: false },
+    ],
+    explanation: 'A flashing red signal means the same as a STOP sign: come to a complete stop, then yield to all traffic and pedestrians before proceeding.',
+    source: { document: 'Ohio BMV Sample Knowledge Test', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
+  },
+  {
+    id: 'bmv-003', category: 'traffic-rules', subcategory: 'licensing', difficulty: 'easy',
+    text: 'The application for an operator’s license must be signed by the parent or guardian when the applicant is under what age?',
+    image_url: null,
+    options: [
+      { id: 'a', text: '16', correct: false },
+      { id: 'b', text: '20', correct: false },
+      { id: 'c', text: '21', correct: false },
+      { id: 'd', text: '18', correct: true },
+    ],
+    explanation: 'If the applicant is under age 18, a parent or guardian must be present to co-sign the application.',
+    source: { document: 'Ohio BMV Sample Knowledge Test', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
+  },
+  {
+    id: 'bmv-004', category: 'traffic-rules', subcategory: 'speed-limits', difficulty: 'easy',
+    text: 'Unless it is posted otherwise, the speed limit in a residential area is:',
+    image_url: null,
+    options: [
+      { id: 'a', text: '25 miles per hour', correct: true },
+      { id: 'b', text: '20 miles per hour', correct: false },
+      { id: 'c', text: '35 miles per hour', correct: false },
+      { id: 'd', text: '15 miles per hour', correct: false },
+    ],
+    explanation: 'Unless posted otherwise, the speed limit on streets within a municipal corporation (residential areas) is 25 mph.',
+    source: { document: 'Ohio BMV Sample Knowledge Test', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
+  },
+  {
+    id: 'bmv-005', category: 'traffic-rules', subcategory: 'child-restraint', difficulty: 'medium',
+    text: 'Child restraints are required for:',
+    image_url: null,
+    options: [
+      { id: 'a', text: 'Infants and children who are either or both under the age of 4 and weigh less than 40 pounds must be properly restrained in an approved child safety seat while being transported in a motor vehicle. Also, any child who is at least 4 years of age but less than 8 years of age must be properly restrained in a booster seat unless the child is 4’9” or taller.', correct: true },
+      { id: 'b', text: 'All children for whom the driver of the car is the parent or guardian', correct: false },
+      { id: 'c', text: 'All children who are seated in the front seat', correct: false },
+      { id: 'd', text: 'All children who are under the age of 6 when air bags are not available', correct: false },
+    ],
+    explanation: 'Children under 4 or under 40 lbs must ride in an approved child safety seat; children 4–7 must use a booster seat unless they are 4’9” or taller.',
+    source: { document: 'Ohio BMV Sample Knowledge Test', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
+  },
+  {
+    id: 'bmv-009', category: 'traffic-rules', subcategory: 'traffic-signals', difficulty: 'easy',
+    text: 'When is a driver permitted to turn right on a red traffic signal?',
+    image_url: null,
+    options: [
+      { id: 'a', text: 'When the driver has stopped and checked to see that the turn will not interfere with crossing traffic', correct: true },
+      { id: 'b', text: 'When signs are clearly posted to allow a right turn on red', correct: false },
+      { id: 'c', text: 'Only at the direction of a police officer', correct: false },
+      { id: 'd', text: 'After first slowing and verifying the turn will interfere with other traffic and pedestrians', correct: false },
+    ],
+    explanation: 'You may turn right on red unless a sign prohibits it — but only after coming to a complete stop and letting all crossing traffic and pedestrians clear the intersection.',
+    source: { document: 'Ohio BMV Sample Knowledge Test', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
+  },
+  {
+    id: 'bmv-010', category: 'traffic-rules', subcategory: 'right-of-way', difficulty: 'medium',
+    text: 'When a stop is required at an intersection and no markings appear to indicate a stop line or crosswalk, which of the following is the appropriate place to make the stop?',
+    image_url: null,
+    options: [
+      { id: 'a', text: 'The driver is not required to stop', correct: false },
+      { id: 'b', text: 'The driver is required to slow down to make sure crossing traffic is clear', correct: false },
+      { id: 'c', text: 'Only at a place where the driver can see at least 200 feet on either side without regard for the intersecting roadway', correct: false },
+      { id: 'd', text: 'At the point nearest the intersecting roadway where the driver has a view of approaching traffic on the intersecting roadway before actually entering the roadway', correct: true },
+    ],
+    explanation: 'With no stop line or crosswalk, stop at the point nearest the intersecting roadway where you can see approaching traffic before entering it.',
+    source: { document: 'Ohio BMV Sample Knowledge Test', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
+  },
 ];

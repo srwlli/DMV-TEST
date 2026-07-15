@@ -23,6 +23,10 @@ class UIRenderer {
     // not in the question body.
     qCategory.textContent = question.category === 'road-signs' ? 'Road Sign' : 'Traffic Rules';
 
+    // Official BMV sample-test questions get a shield "Official BMV" badge so
+    // the user can see this exact question comes from the state's own sample test.
+    this.renderOfficialBadge(question);
+
     // Show/hide image based on question type. The container is display:none by
     // default and shown via the `.visible` class (see main.css).
     if (question.image_url) {
@@ -67,6 +71,19 @@ class UIRenderer {
 
     this.updateProgressRing(questionIndex + 1, session.questions.length);
     this.updateNavigationButtons(session, questionIndex);
+  }
+
+  /**
+   * Show or hide the "Official BMV" shield badge for the current question.
+   * Shown only when the question's source is one of the official BMV sample
+   * questions (source.badge === 'bmv-official-sample').
+   */
+  renderOfficialBadge(question) {
+    const badge = document.getElementById('qOfficialBadge');
+    if (!badge) return;
+    const isOfficial = question.source && question.source.badge === 'bmv-official-sample';
+    badge.classList.toggle('hidden', !isOfficial);
+    if (isOfficial && window.lucide) window.lucide.createIcons();
   }
 
   /**

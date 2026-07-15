@@ -1511,3 +1511,20 @@ body {
   width: 13px;
   height: 13px;
 }
+
+/* Question header badges: category chip + optional "Official BMV" shield. */
+.question-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.question-badges .question-category {
+  margin-bottom: 0;
+}
+
+.official-badge.hidden {
+  display: none;
+}
