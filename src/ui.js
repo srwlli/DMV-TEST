@@ -1,0 +1,526 @@
+/**
+ * UI Renderer - Handles all DOM updates and interactive elements
+ */
+
+class UIRenderer {
+  constructor() {
+    this.currentSession = null;
+    this.currentMode = 'quiz';
+  }
+
+  /**
+   * Render a question card
+   */
+  renderQuestion(session, questionIndex) {
+    const question = session.questions[questionIndex];
+    const qNumber = document.getElementById('qNumber');
+    const qCategory = document.getElementById('qCategory');
+    const qImageContainer = document.getElementById('qImageContainer');
+    const qImage = document.getElementById('qImage');
+    const qText = document.getElementById('qText');
+    const optionsGroup = document.getElementById('optionsGroup');
+
+    qNumber.textContent = questionIndex + 1;
+    qCategory.textContent = question.category === 'road-signs' ? '🚦 Road Sign' : '📋 Traffic Rules';
+
+    // Show/hide image based on question type
+    if (question.image_url) {
+      qImageContainer.classList.remove('hidden');
+      qImage.src = question.image_url;
+      qImage.alt = question.text;
+    } else {
+      qImageContainer.classList.add('hidden');
+    }
+
+    qText.textContent = question.text;
+
+    // Clear previous options
+    optionsGroup.innerHTML = '';
+
+    // Render options
+    question.options.forEach((option, index) => {
+      const optionBtn = document.createElement('button');
+      optionBtn.className = 'option-button';
+      optionBtn.dataset.answerId = option.id;
+      optionBtn.dataset.questionIndex = questionIndex;
+
+      optionBtn.innerHTML = `
+        <span class="option-label">${String.fromCharCode(65 + index)}.</span>
+        <span class="option-text">${option.text}</span>
+      `;
+
+      optionBtn.addEventListener('click', (e) => {
+        this.handleAnswerSubmit(session, questionIndex, option.id, e.target.closest('.option-button'));
+      });
+
+      optionsGroup.appendChild(optionBtn);
+    });
+
+    this.updateProgressRing(questionIndex + 1, session.questions.length);
+    this.updateNavigationButtons(questionIndex, session.questions.length);
+  }
+
+  /**
+   * Handle answer submission
+   */
+  async handleAnswerSubmit(session, questionIndex, answerId, buttonElement) {
+    // Disable all options during feedback
+    document.querySelectorAll('.option-button').forEach(btn => {
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity = '0.6';
+    });
+
+    const { correct, attempt } = await quizEngine.submitAnswer(session, questionIndex, answerId);
+    const question = session.questions[questionIndex];
+    const correctOptionId = question.options.find(o => o.correct).id;
+
+    // Highlight selected option
+    buttonElement.classList.add(correct ? 'correct' : 'incorrect');
+
+    // Highlight correct answer if wrong
+    if (!correct) {
+      document.querySelectorAll('.option-button').forEach(btn => {
+        if (btn.dataset.answerId === correctOptionId) {
+          btn.classList.add('correct');
+        }
+      });
+    }
+
+    // Show feedback
+    this.showFeedback(question, correct, attempt);
+
+    // Enable next button
+    document.getElementById('nextBtn').disabled = false;
+    document.getElementById('prevBtn').disabled = questionIndex === 0;
+  }
+
+  /**
+   * Show feedback modal
+   */
+  showFeedback(question, correct, attempt) {
+    const feedbackContainer = document.getElementById('feedbackContainer');
+    const correctOption = question.options.find(o => o.correct);
+
+    feedbackContainer.innerHTML = `
+      <div class="feedback-card ${correct ? 'feedback-correct' : 'feedback-incorrect'}">
+        <div class="feedback-header">
+          <span class="feedback-status">${correct ? '✓ Correct!' : '✗ Incorrect'}</span>
+        </div>
+        <div class="feedback-body">
+          <div class="feedback-explanation">
+            <strong>Explanation:</strong>
+            <p>${question.explanation}</p>
+          </div>
+          <div class="feedback-correct-answer">
+            <strong>Correct Answer:</strong>
+            <p>${correctOption.text}</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    feedbackContainer.classList.remove('hidden');
+
+    // Trigger animation
+    feedbackContainer.style.animation = 'none';
+    setTimeout(() => {
+      feedbackContainer.style.animation = correct ? 'slideUp 0.4s ease' : 'shake 0.4s ease';
+    }, 10);
+  }
+
+  /**
+   * Clear feedback
+   */
+  clearFeedback() {
+    const feedbackContainer = document.getElementById('feedbackContainer');
+    feedbackContainer.classList.add('hidden');
+    feedbackContainer.innerHTML = '';
+
+    // Re-enable navigation
+    document.querySelectorAll('.option-button').forEach(btn => {
+      btn.style.pointerEvents = 'auto';
+      btn.style.opacity = '1';
+      btn.classList.remove('correct', 'incorrect', 'selected');
+    });
+  }
+
+  /**
+   * Update progress ring
+   */
+  updateProgressRing(current, total) {
+    const percent = Math.round((current / total) * 100);
+    const progressRing = document.getElementById('progressRing');
+    const questionCounter = document.getElementById('questionCounter');
+
+    progressRing.style.setProperty('--progress', percent);
+    questionCounter.textContent = `${current}/${total}`;
+  }
+
+  /**
+   * Update navigation buttons
+   */
+  updateNavigationButtons(index, total) {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === total - 1;
+
+    if (index === total - 1) {
+      nextBtn.textContent = 'Submit Quiz →';
+      nextBtn.classList.add('btn-success');
+    } else {
+      nextBtn.textContent = 'Next →';
+      nextBtn.classList.remove('btn-success');
+    }
+  }
+
+  /**
+   * Render quiz results modal
+   */
+  async renderQuizResults(sessionData) {
+    const modal = document.getElementById('quizResultsModal');
+    const body = document.getElementById('quizResultsBody');
+
+    const passed = sessionData.passing ? '✓ PASSED' : '✗ Did not pass';
+    const passClass = sessionData.passing ? 'result-pass' : 'result-fail';
+
+    let categoryBreakdown = '';
+    Object.entries(sessionData.by_category).forEach(([category, stats]) => {
+      const categoryPercent = Math.round((stats.correct / stats.total) * 100);
+      categoryBreakdown += `
+        <div class="category-score-item">
+          <div class="category-name">${category}</div>
+          <div class="category-stats">${stats.correct}/${stats.total} (${categoryPercent}%)</div>
+          <div class="category-score-bar">
+            <div class="score-fill" style="width: ${categoryPercent}%"></div>
+          </div>
+        </div>
+      `;
+    });
+
+    body.innerHTML = `
+      <div class="results-container">
+        <h2 class="results-title">Quiz Complete!</h2>
+        <div class="results-score ${passClass}">
+          <div class="score-large">${sessionData.score_percent}%</div>
+          <div class="score-label">${passed}</div>
+          <div class="score-detail">${sessionData.correct} / ${sessionData.questions_attempted} correct</div>
+        </div>
+
+        <div class="results-stats">
+          <div class="stat-row">
+            <span>Time:</span>
+            <span>${this.formatSeconds(sessionData.duration_seconds)}</span>
+          </div>
+          <div class="stat-row">
+            <span>Passing Score:</span>
+            <span>30 / 40 (75%)</span>
+          </div>
+        </div>
+
+        <div class="category-scores">
+          <h3>Category Breakdown</h3>
+          ${categoryBreakdown}
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-primary" id="retakeBtn">Retake Quiz</button>
+          <button class="btn btn-secondary" id="reviewBtn">Review Answers</button>
+          <button class="btn btn-ghost" id="homeBtn">Back to Home</button>
+        </div>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+
+    // Attach event listeners
+    document.getElementById('retakeBtn').addEventListener('click', () => {
+      modal.classList.add('hidden');
+      window.location.hash = '#quiz';
+      window.location.reload();
+    });
+
+    document.getElementById('reviewBtn').addEventListener('click', () => {
+      modal.classList.add('hidden');
+      this.renderReviewMode(sessionData);
+    });
+
+    document.getElementById('homeBtn').addEventListener('click', () => {
+      modal.classList.add('hidden');
+      this.showView('home');
+    });
+
+    document.getElementById('quizResultsClose').addEventListener('click', () => {
+      modal.classList.add('hidden');
+      this.showView('home');
+    });
+  }
+
+  /**
+   * Render review mode
+   */
+  renderReviewMode(sessionData) {
+    const reviewContainer = document.createElement('div');
+    reviewContainer.className = 'review-container';
+
+    sessionData.answered_questions.forEach((answer, index) => {
+      const question = sessionData.answered_questions[index];
+      const cardClass = answer.correct ? 'review-correct' : 'review-incorrect';
+
+      const reviewCard = document.createElement('div');
+      reviewCard.className = `review-card ${cardClass}`;
+      reviewCard.innerHTML = `
+        <div class="review-number">Question ${index + 1}</div>
+        <div class="review-status">${answer.correct ? '✓ Correct' : '✗ Incorrect'}</div>
+      `;
+
+      reviewContainer.appendChild(reviewCard);
+    });
+
+    this.showView('review');
+  }
+
+  /**
+   * Render home screen stats
+   */
+  async renderHomeStats() {
+    const sessions = await quizEngine.getSessions();
+    const bestScoreEl = document.getElementById('bestScore');
+    const lastSessionEl = document.getElementById('lastSession');
+    const streakEl = document.getElementById('streak');
+
+    if (sessions.length === 0) {
+      bestScoreEl.textContent = '—';
+      lastSessionEl.textContent = '—';
+      streakEl.textContent = '0';
+      return;
+    }
+
+    const bestScore = Math.max(...sessions.map(s => s.score_percent));
+    const lastSession = new Date(sessions[sessions.length - 1].completed_at);
+    const streak = await quizEngine.getStreak();
+
+    bestScoreEl.textContent = `${bestScore}%`;
+    lastSessionEl.textContent = this.formatDate(lastSession);
+    streakEl.textContent = streak;
+  }
+
+  /**
+   * Render progress screen
+   */
+  async renderProgress(allQuestions) {
+    const readiness = await quizEngine.calculateReadiness(allQuestions);
+    const readinessPercent = document.getElementById('readinessPercent');
+    const readinessLabel = document.getElementById('readinessLabel');
+    const readinessRing = document.getElementById('readinessRing');
+
+    readinessPercent.textContent = readiness.overall;
+    readinessLabel.textContent = readiness.readyForTest ? '✓ Ready for Test!' : 'Keep practicing';
+    readinessRing.style.setProperty('--progress', readiness.overall);
+
+    // Stats
+    const sessions = await quizEngine.getSessions();
+    document.getElementById('statSessions').textContent = sessions.length;
+    document.getElementById('statAccuracy').textContent = `${readiness.score}%`;
+
+    // Mastered count
+    let masteredCount = 0;
+    for (const q of allQuestions) {
+      const attempts = await quizEngine.getAttempts(q.id);
+      if (quizEngine.getQuestionState(attempts) === 'MASTERED') {
+        masteredCount++;
+      }
+    }
+    document.getElementById('statMastered').textContent = masteredCount;
+
+    // Category scores
+    const categoryScoresEl = document.getElementById('categoryScores');
+    const categoryMap = {};
+
+    sessions.forEach(session => {
+      Object.entries(session.by_category || {}).forEach(([cat, stats]) => {
+        if (!categoryMap[cat]) categoryMap[cat] = { correct: 0, total: 0 };
+        categoryMap[cat].correct += stats.correct;
+        categoryMap[cat].total += stats.total;
+      });
+    });
+
+    categoryScoresEl.innerHTML = '<h3>Category Breakdown</h3>';
+    Object.entries(categoryMap).forEach(([category, stats]) => {
+      const percent = Math.round((stats.correct / stats.total) * 100);
+      const item = document.createElement('div');
+      item.className = 'category-score-item';
+      item.innerHTML = `
+        <div class="category-name">${category}</div>
+        <div class="category-stats">${stats.correct}/${stats.total} (${percent}%)</div>
+        <div class="category-score-bar">
+          <div class="score-fill" style="width: ${percent}%"></div>
+        </div>
+      `;
+      categoryScoresEl.appendChild(item);
+    });
+
+    // Weak areas
+    const weakAreas = await quizEngine.getWeakAreas(allQuestions);
+    const weakAreasEl = document.getElementById('weakAreas');
+
+    if (weakAreas.length > 0) {
+      weakAreasEl.innerHTML = '<h3 class="weak-areas-title">🔥 Weak Areas</h3>';
+      weakAreas.slice(0, 5).forEach(area => {
+        const item = document.createElement('div');
+        item.className = 'weak-area-item';
+        item.innerHTML = `
+          <div class="weak-area-name">${area.category}</div>
+          <div class="weak-area-stats">${area.wrongCount} misses out of ${area.totalAttempts}</div>
+        `;
+        weakAreasEl.appendChild(item);
+      });
+
+      const practiceBtn = document.getElementById('practiceWeakBtn');
+      practiceBtn.disabled = false;
+      practiceBtn.addEventListener('click', () => this.practiceWeakAreas(weakAreas, allQuestions));
+    } else {
+      weakAreasEl.innerHTML = '<div class="no-weak-areas">✓ No weak areas detected!</div>';
+    }
+  }
+
+  /**
+   * Practice weak areas
+   */
+  async practiceWeakAreas(weakAreas, allQuestions) {
+    const weakQuestionIds = new Set(weakAreas.map(a => a.question_id));
+    const weakQuestions = allQuestions.filter(q => weakQuestionIds.has(q.id));
+
+    const session = quizEngine.createQuizSession(weakQuestions, 'weak-areas');
+    this.showView('quiz');
+    this.renderQuestion(session, 0);
+  }
+
+  /**
+   * Render study mode categories
+   */
+  async renderStudyCategories(allQuestions) {
+    const categoryList = document.getElementById('categoryList');
+    categoryMap = {};
+
+    allQuestions.forEach(q => {
+      if (!categoryMap[q.category]) categoryMap[q.category] = [];
+      categoryMap[q.category].push(q);
+    });
+
+    categoryList.innerHTML = '';
+    Object.entries(categoryMap).forEach(([category, questions]) => {
+      const card = document.createElement('button');
+      card.className = 'category-card';
+      card.innerHTML = `
+        <div class="card-icon">${category === 'road-signs' ? '🚦' : '📋'}</div>
+        <div class="card-title">${category === 'road-signs' ? 'Road Signs' : 'Traffic Rules'}</div>
+        <div class="card-desc">${questions.length} questions</div>
+      `;
+      card.addEventListener('click', () => {
+        const session = quizEngine.createQuizSession(questions, 'study');
+        this.showView('quiz');
+        this.renderQuestion(session, 0);
+      });
+      categoryList.appendChild(card);
+    });
+  }
+
+  /**
+   * Render road signs gallery
+   */
+  renderSignsGallery(roadSigns) {
+    const signsGrid = document.getElementById('signsGrid');
+    signsGrid.innerHTML = '';
+
+    roadSigns.forEach(sign => {
+      const tile = document.createElement('div');
+      tile.className = 'sign-tile';
+      tile.innerHTML = `
+        <div class="sign-image-small">${sign.emoji || '🚦'}</div>
+        <div class="sign-name">${sign.name}</div>
+        <div class="sign-type">${sign.type}</div>
+      `;
+      tile.addEventListener('click', () => this.showSignDetail(sign));
+      signsGrid.appendChild(tile);
+    });
+  }
+
+  /**
+   * Show sign detail modal
+   */
+  showSignDetail(sign) {
+    const modal = document.getElementById('signModal');
+    const body = document.getElementById('signModalBody');
+
+    body.innerHTML = `
+      <div class="sign-detail">
+        <h2>${sign.name}</h2>
+        <div class="sign-emoji">${sign.emoji || '🚦'}</div>
+        <div class="sign-type">Type: ${sign.type}</div>
+        <p class="sign-description">${sign.description}</p>
+        <p class="sign-meaning"><strong>Meaning:</strong> ${sign.meaning}</p>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+  }
+
+  /**
+   * Switch views
+   */
+  showView(viewName) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(`${viewName}View`).classList.add('active');
+
+    // Close menu if open
+    const menu = document.getElementById('menu');
+    if (!menu.classList.contains('hidden')) {
+      menu.classList.add('hidden');
+    }
+  }
+
+  /**
+   * Format seconds to MM:SS
+   */
+  formatSeconds(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  /**
+   * Format date (relative or absolute)
+   */
+  formatDate(date) {
+    const now = new Date();
+    const diff = now - date;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (days === 0) return 'Today';
+    if (days === 1) return 'Yesterday';
+    if (days < 7) return `${days} days ago`;
+    return date.toLocaleDateString();
+  }
+
+  /**
+   * Show toast notification
+   */
+  showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = 'slideUp 0.3s ease reverse';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+}
+
+// Create global instance
+const uiRenderer = new UIRenderer();
