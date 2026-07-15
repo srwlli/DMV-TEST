@@ -118,7 +118,6 @@
 
           <div class="quiz-content">
             <div class="question-card" id="questionCard">
-              <div class="question-number">Question <span id="qNumber">1</span> of <span id="qTotal">40</span></div>
               <div class="question-category" id="qCategory">Road Signs</div>
 
               <div class="question-image-container" id="qImageContainer">
@@ -131,15 +130,15 @@
                 <!-- Options rendered here by app.js -->
               </div>
 
+              <div id="feedbackContainer" class="feedback-container hidden">
+                <!-- Feedback shown here after Submit -->
+              </div>
+
               <div class="quiz-actions">
-                <button id="nextBtn" class="btn btn-primary" disabled>Next <i data-lucide="arrow-right"></i></button>
+                <button id="nextBtn" class="btn btn-primary" disabled>Submit <i data-lucide="check"></i></button>
                 <button id="skipBtn" class="btn btn-ghost">Skip</button>
               </div>
             </div>
-          </div>
-
-          <div id="feedbackContainer" class="feedback-container hidden">
-            <!-- Feedback shown here -->
           </div>
         </div>
       </section>

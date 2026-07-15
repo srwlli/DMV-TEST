@@ -193,9 +193,12 @@ class DMVTestApp {
   }
 
   /**
-   * Quiz controls. Flow: tap selects an option (no lock), Next/Submit COMMITS
-   * the selection then advances (or finishes on the last question). The header
-   * chevron goes to the previous question; the header X exits the quiz.
+   * Quiz controls. Two-stage flow per question:
+   *   1. Tap an option to SELECT it (highlight only — nothing is locked).
+   *   2. Press SUBMIT to commit: the answer locks and feedback appears in place.
+   *   3. Press NEXT to advance (or FINISH on the last question).
+   * The same button carries the label for the current stage. The header chevron
+   * goes to the previous question; the header X exits the quiz.
    */
   setupQuizControls() {
     const nextBtn = document.getElementById('nextBtn');
@@ -219,15 +222,24 @@ class DMVTestApp {
       this.navigateTo('home');
     });
 
-    // Next / Submit: commit the pending selection, then advance or finish.
+    // Submit / Next / Finish — one button, two stages.
     nextBtn.addEventListener('click', async () => {
       const s = this.currentSession;
       if (!s) return;
+      const index = s.currentIndex;
+      const answered = s.answers.some(a => a.question_index === index);
 
-      const committed = await uiRenderer.commitSelection(s, s.currentIndex);
-      if (!committed) return; // nothing selected — shouldn't happen (btn gated)
+      if (!answered) {
+        // Stage 1 — SUBMIT: commit the selection and reveal feedback in place.
+        // Do NOT advance; the button flips to Next/Finish for the second press.
+        const committed = await uiRenderer.commitSelection(s, index);
+        if (!committed) return; // nothing selected — button was gated, ignore
+        uiRenderer.updateNavigationButtons(s, index);
+        return;
+      }
 
-      if (s.currentIndex === s.questions.length - 1) {
+      // Stage 2 — NEXT / FINISH: this question is already answered.
+      if (index === s.questions.length - 1) {
         s.endTime = Date.now();
         const results = await quizEngine.completeQuizSession(s);
         await uiRenderer.renderQuizResults(results);

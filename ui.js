@@ -13,25 +13,24 @@ class UIRenderer {
    */
   renderQuestion(session, questionIndex) {
     const question = session.questions[questionIndex];
-    const qNumber = document.getElementById('qNumber');
     const qCategory = document.getElementById('qCategory');
     const qImageContainer = document.getElementById('qImageContainer');
     const qImage = document.getElementById('qImage');
     const qText = document.getElementById('qText');
     const optionsGroup = document.getElementById('optionsGroup');
 
-    qNumber.textContent = questionIndex + 1;
-    const qTotal = document.getElementById('qTotal');
-    if (qTotal) qTotal.textContent = session.questions.length;
+    // The running count lives only in the header progress ring (updateProgressRing),
+    // not in the question body.
     qCategory.textContent = question.category === 'road-signs' ? 'Road Sign' : 'Traffic Rules';
 
-    // Show/hide image based on question type
+    // Show/hide image based on question type. The container is display:none by
+    // default and shown via the `.visible` class (see main.css).
     if (question.image_url) {
-      qImageContainer.classList.remove('hidden');
+      qImageContainer.classList.add('visible');
       qImage.src = question.image_url;
       qImage.alt = question.text;
     } else {
-      qImageContainer.classList.add('hidden');
+      qImageContainer.classList.remove('visible');
     }
 
     qText.textContent = question.text;
@@ -80,21 +79,19 @@ class UIRenderer {
     session.pendingSelection = session.pendingSelection || {};
     session.pendingSelection[questionIndex] = answerId;
     this.reflectSelection(session, questionIndex);
-
-    // Enable the commit (Next/Submit) button now that something is selected.
-    document.getElementById('nextBtn').disabled = false;
   }
 
   /**
-   * Visually mark the currently-selected (pending) option.
+   * Visually mark the currently-selected (pending) option and sync the
+   * Submit button's enabled state to whether a selection exists.
    */
   reflectSelection(session, questionIndex) {
     const pending = session.pendingSelection && session.pendingSelection[questionIndex];
     document.querySelectorAll('.option-button').forEach(btn => {
       btn.classList.toggle('selected', pending != null && btn.dataset.answerId === pending);
     });
-    // Enable Next/Submit only if there is a selection for this question.
-    document.getElementById('nextBtn').disabled = pending == null;
+    // Sync Submit/Next label + enabled state for the current stage.
+    this.updateNavigationButtons(session, questionIndex);
   }
 
   /**
@@ -138,7 +135,8 @@ class UIRenderer {
 
     const correct = userAnswerId === correctOptionId;
     this.showFeedback(question, correct);
-    document.getElementById('nextBtn').disabled = false;
+    // Flip the action button to Next/Finish now that the answer is committed.
+    this.updateNavigationButtons(session, questionIndex);
   }
 
   /**
@@ -173,10 +171,11 @@ class UIRenderer {
     feedbackContainer.classList.remove('hidden');
     if (window.lucide) window.lucide.createIcons();
 
-    // Trigger animation
+    // Trigger animation, then bring the feedback into view within the card.
     feedbackContainer.style.animation = 'none';
     setTimeout(() => {
       feedbackContainer.style.animation = correct ? 'slideUp 0.4s ease' : 'shake 0.4s ease';
+      feedbackContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 10);
   }
 
@@ -232,26 +231,44 @@ class UIRenderer {
   }
 
   /**
-   * Update navigation buttons for the current question.
+   * Update the action button + header for the current question's stage.
    * - Header prev (quizPrevBtn) enabled unless on the first question.
-   * - Next/Submit label reflects last-question; disabled until the question
-   *   has a selection or is already committed (set by reflect/commit helpers).
+   * - Button label reflects the two-stage flow:
+   *     not answered  → "Submit"  (commits + reveals feedback)
+   *     answered      → "Next"    (advances) or "Finish" on the last question.
+   * - Skip is only meaningful before answering, and never on the last question.
    */
   updateNavigationButtons(session, index) {
     const total = session.questions.length;
     const prevBtn = document.getElementById('quizPrevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const skipBtn = document.getElementById('skipBtn');
     const isLast = index === total - 1;
+    const answered = session.answers.some(a => a.question_index === index);
+    const hasSelection = session.pendingSelection && session.pendingSelection[index] != null;
 
     if (prevBtn) prevBtn.disabled = index === 0;
 
-    if (isLast) {
-      nextBtn.innerHTML = 'Submit Quiz <i data-lucide="check"></i>';
+    if (!answered) {
+      // Stage 1: Submit. Enabled only once an option is selected.
+      nextBtn.innerHTML = 'Submit <i data-lucide="check"></i>';
+      nextBtn.classList.remove('btn-success');
+      nextBtn.disabled = !hasSelection;
+    } else if (isLast) {
+      // Stage 2, last question: Finish the quiz.
+      nextBtn.innerHTML = 'Finish <i data-lucide="flag"></i>';
       nextBtn.classList.add('btn-success');
+      nextBtn.disabled = false;
     } else {
+      // Stage 2: advance to the next question.
       nextBtn.innerHTML = 'Next <i data-lucide="arrow-right"></i>';
       nextBtn.classList.remove('btn-success');
+      nextBtn.disabled = false;
     }
+
+    // Once answered (or on the last question) there is nothing to skip.
+    if (skipBtn) skipBtn.style.display = answered || isLast ? 'none' : '';
+
     if (window.lucide) window.lucide.createIcons();
   }
 

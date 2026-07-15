@@ -208,6 +208,10 @@ body {
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+  /* Flex column so the active view (the only visible child) can stretch to
+     fill the available height — the quiz uses this for its full-body card. */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Views */
@@ -470,6 +474,54 @@ body {
 /* Quiz View */
 .quiz-container {
   padding: 0;
+}
+
+/* Full-body quiz card: the active quiz view stretches to fill the main area,
+   its card grows to the available height, options fill the middle, and the
+   action buttons pin to the bottom of the card. */
+#quizView.active {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#quizView.active .quiz-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#quizView.active .quiz-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#quizView.active .question-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Options size to content; the card grows around them. */
+#quizView.active .options-group {
+  flex: 0 0 auto;
+}
+
+/* Feedback (shown after Submit) sits directly under the options. */
+#quizView.active .feedback-container:not(.hidden) {
+  flex: 0 0 auto;
+}
+
+/* Actions pin to the bottom of the card so Submit/Next is always reachable. */
+#quizView.active .quiz-actions {
+  margin-top: auto;
+  padding-top: var(--spacing-lg);
 }
 
 .quiz-header {
