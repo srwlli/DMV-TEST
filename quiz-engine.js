@@ -6,14 +6,18 @@ class QuizEngine {
   constructor() {
     this.db = null;
     this.isInitialized = false;
+    this._initPromise = null;
     this.init();
   }
 
   /**
-   * Initialize IndexedDB
+   * Initialize IndexedDB. Idempotent — repeated calls return the SAME in-flight
+   * (or resolved) promise instead of opening the database again, which could
+   * otherwise block/throw and abort the app's startup sequence.
    */
   async init() {
-    return new Promise((resolve, reject) => {
+    if (this._initPromise) return this._initPromise;
+    this._initPromise = new Promise((resolve, reject) => {
       const request = indexedDB.open('dmv-test', 1);
 
       request.onerror = () => reject(request.error);
@@ -49,6 +53,7 @@ class QuizEngine {
         }
       };
     });
+    return this._initPromise;
   }
 
   /**

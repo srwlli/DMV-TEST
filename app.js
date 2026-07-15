@@ -14,10 +14,7 @@ class DMVTestApp {
    * Initialize app on page load
    */
   async init() {
-    // Wait for quiz engine to be ready
-    await quizEngine.init();
-
-    // Load data
+    // Load data (synchronous globals from data/*.js)
     if (typeof QUESTIONS !== 'undefined') {
       this.allQuestions = QUESTIONS;
     }
@@ -25,20 +22,28 @@ class DMVTestApp {
       this.roadSigns = ROAD_SIGNS;
     }
 
-    // Setup UI
+    // Wire up the UI FIRST — navigation must work even if IndexedDB is
+    // unavailable (private mode, storage disabled, etc.). Never gate event
+    // listeners behind an async DB call.
     this.setupThemeToggle();
     this.setupNavigation();
     this.setupQuizControls();
     this.setupStudyMode();
     this.setupRoadSigns();
     this.setupProgress();
-
-    // Render initial home screen
-    await uiRenderer.renderHomeStats();
     uiRenderer.showView('home');
 
     // Render all static Lucide icons in the initial markup
     if (window.lucide) window.lucide.createIcons();
+
+    // Now bring up persistence + stats. If the DB fails, the app still works
+    // (quizzes just won't persist) — swallow so it can't break the UI.
+    try {
+      await quizEngine.init();
+      await uiRenderer.renderHomeStats();
+    } catch (err) {
+      console.warn('Persistence unavailable; quiz history disabled.', err);
+    }
   }
 
   /**
