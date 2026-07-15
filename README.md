@@ -2,6 +2,8 @@
 
 A mobile-first, interactive study tool for students preparing for the Ohio BMV knowledge test.
 
+🎯 **[Live App](https://srwlli.github.io/DMV-TEST/)** — Study now on your phone or computer
+
 ## Features
 
 - **Mobile-First Design** — Optimized for smartphones and tablets
@@ -54,14 +56,25 @@ DMV-TEST/
 
 ## Getting Started
 
+### Online (No Installation)
+Visit [https://srwlli.github.io/DMV-TEST/](https://srwlli.github.io/DMV-TEST/) and start studying immediately. The app works on any browser and stores your progress locally on your device.
+
+### Local Development
 ```bash
-git clone https://github.com/your-username/DMV-TEST.git
+git clone https://github.com/srwlli/DMV-TEST.git
 cd DMV-TEST
-npm install
-npm start
-# Open http://localhost:3000
+# Simply open src/index.html in a browser
+# Or serve with any HTTP server:
+python -m http.server 8000
+# Then open http://localhost:8000/src/
 ```
+
+## Official Resources
+
+📘 **[Ohio Driver Manual PDF](https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf)** — Official BMV Handbook (HSY 7607)
+
+The app is built from verified material from the official Ohio Department of Public Safety driver handbook and state traffic laws.
 
 ---
 
-**Status:** Research complete. Ready for Phase 1 implementation.
+**Status:** MVP complete with 40 verified questions, 107 road signs, and full UI/UX. Live on GitHub Pages.
