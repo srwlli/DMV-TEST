@@ -21,7 +21,7 @@ class UIRenderer {
     const optionsGroup = document.getElementById('optionsGroup');
 
     qNumber.textContent = questionIndex + 1;
-    qCategory.textContent = question.category === 'road-signs' ? '🚦 Road Sign' : '📋 Traffic Rules';
+    qCategory.textContent = question.category === 'road-signs' ? 'Road Sign' : 'Traffic Rules';
 
     // Show/hide image based on question type
     if (question.image_url) {
@@ -195,12 +195,13 @@ class UIRenderer {
     nextBtn.disabled = index === total - 1;
 
     if (index === total - 1) {
-      nextBtn.textContent = 'Submit Quiz →';
+      nextBtn.innerHTML = 'Submit Quiz <i data-lucide="check"></i>';
       nextBtn.classList.add('btn-success');
     } else {
-      nextBtn.textContent = 'Next →';
+      nextBtn.innerHTML = 'Next <i data-lucide="arrow-right"></i>';
       nextBtn.classList.remove('btn-success');
     }
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /**
@@ -210,7 +211,9 @@ class UIRenderer {
     const modal = document.getElementById('quizResultsModal');
     const body = document.getElementById('quizResultsBody');
 
-    const passed = sessionData.passing ? '✓ PASSED' : '✗ Did not pass';
+    const passed = sessionData.passing
+      ? '<i data-lucide="check-circle"></i> PASSED'
+      : '<i data-lucide="x-circle"></i> Did not pass';
     const passClass = sessionData.passing ? 'result-pass' : 'result-fail';
 
     let categoryBreakdown = '';
@@ -261,6 +264,7 @@ class UIRenderer {
     `;
 
     modal.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
 
     // Attach event listeners
     document.getElementById('retakeBtn').addEventListener('click', () => {
@@ -300,7 +304,7 @@ class UIRenderer {
       reviewCard.className = `review-card ${cardClass}`;
       reviewCard.innerHTML = `
         <div class="review-number">Question ${index + 1}</div>
-        <div class="review-status">${answer.correct ? '✓ Correct' : '✗ Incorrect'}</div>
+        <div class="review-status">${answer.correct ? '<i data-lucide="check"></i> Correct' : '<i data-lucide="x"></i> Incorrect'}</div>
       `;
 
       reviewContainer.appendChild(reviewCard);
@@ -344,7 +348,9 @@ class UIRenderer {
     const readinessRing = document.getElementById('readinessRing');
 
     readinessPercent.textContent = readiness.overall;
-    readinessLabel.textContent = readiness.readyForTest ? '✓ Ready for Test!' : 'Keep practicing';
+    readinessLabel.innerHTML = readiness.readyForTest
+      ? '<i data-lucide="check-circle"></i> Ready for Test!'
+      : 'Keep practicing';
     readinessRing.style.setProperty('--progress', readiness.overall);
 
     // Stats
@@ -394,7 +400,7 @@ class UIRenderer {
     const weakAreasEl = document.getElementById('weakAreas');
 
     if (weakAreas.length > 0) {
-      weakAreasEl.innerHTML = '<h3 class="weak-areas-title">🔥 Weak Areas</h3>';
+      weakAreasEl.innerHTML = '<h3 class="weak-areas-title"><i data-lucide="flame"></i> Weak Areas</h3>';
       weakAreas.slice(0, 5).forEach(area => {
         const item = document.createElement('div');
         item.className = 'weak-area-item';
@@ -409,8 +415,9 @@ class UIRenderer {
       practiceBtn.disabled = false;
       practiceBtn.addEventListener('click', () => this.practiceWeakAreas(weakAreas, allQuestions));
     } else {
-      weakAreasEl.innerHTML = '<div class="no-weak-areas">✓ No weak areas detected!</div>';
+      weakAreasEl.innerHTML = '<div class="no-weak-areas"><i data-lucide="check-circle"></i> No weak areas detected!</div>';
     }
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /**
@@ -475,14 +482,18 @@ class UIRenderer {
     roadSigns.forEach(sign => {
       const tile = document.createElement('div');
       tile.className = 'sign-tile';
+      const visual = sign.image_url
+        ? `<img src="${sign.image_url}" alt="${sign.name}" class="sign-img">`
+        : `<i data-lucide="signpost"></i>`;
       tile.innerHTML = `
-        <div class="sign-image-small">${sign.emoji || '🚦'}</div>
+        <div class="sign-image-small">${visual}</div>
         <div class="sign-name">${sign.name}</div>
         <div class="sign-type">${sign.type}</div>
       `;
       tile.addEventListener('click', () => this.showSignDetail(sign));
       signsGrid.appendChild(tile);
     });
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /**
@@ -492,10 +503,13 @@ class UIRenderer {
     const modal = document.getElementById('signModal');
     const body = document.getElementById('signModalBody');
 
+    const visual = sign.image_url
+      ? `<img src="${sign.image_url}" alt="${sign.name}" class="sign-img-large">`
+      : `<i data-lucide="signpost"></i>`;
     body.innerHTML = `
       <div class="sign-detail">
         <h2>${sign.name}</h2>
-        <div class="sign-emoji">${sign.emoji || '🚦'}</div>
+        <div class="sign-emoji">${visual}</div>
         <div class="sign-type">Type: ${sign.type}</div>
         <p class="sign-description">${sign.description}</p>
         <p class="sign-meaning"><strong>Meaning:</strong> ${sign.meaning}</p>
@@ -503,6 +517,7 @@ class UIRenderer {
     `;
 
     modal.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /**

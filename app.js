@@ -36,6 +36,9 @@ class DMVTestApp {
     // Render initial home screen
     await uiRenderer.renderHomeStats();
     uiRenderer.showView('home');
+
+    // Render all static Lucide icons in the initial markup
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /**
@@ -49,12 +52,22 @@ class DMVTestApp {
     const savedTheme = localStorage.getItem('theme') || 'light';
     htmlEl.setAttribute('data-theme', savedTheme);
 
+    // Show a moon in light mode (tap to go dark), a sun in dark mode.
+    const setThemeIcon = (theme) => {
+      const iconEl = themeToggle.querySelector('.theme-icon');
+      if (!iconEl) return;
+      iconEl.innerHTML = `<i data-lucide="${theme === 'dark' ? 'sun' : 'moon'}"></i>`;
+      if (window.lucide) window.lucide.createIcons();
+    };
+    setThemeIcon(savedTheme);
+
     themeToggle.addEventListener('click', () => {
       const currentTheme = htmlEl.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
       htmlEl.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
+      setThemeIcon(newTheme);
     });
   }
 
@@ -64,59 +77,75 @@ class DMVTestApp {
   setupNavigation() {
     const menuToggle = document.getElementById('menuToggle');
     const menu = document.getElementById('menu');
+    const navLinks = document.querySelectorAll('.nav-link');
     const menuItems = document.querySelectorAll('.menu-item');
-    const homeCards = document.querySelectorAll('[data-view]');
+    const homeCards = document.querySelectorAll('.home-card[data-view]');
 
-    // Toggle menu
+    // Toggle mobile dropdown menu
     menuToggle.addEventListener('click', () => {
       menu.classList.toggle('hidden');
     });
 
-    // Menu item clicks
-    menuItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const viewName = item.dataset.view;
-        uiRenderer.showView(viewName);
-        menu.classList.add('hidden');
-      });
-    });
+    // Persistent navbar links + mobile menu items + home cards all route
+    // through the same navigateTo() so every view renders its content.
+    navLinks.forEach(link =>
+      link.addEventListener('click', () => this.navigateTo(link.dataset.view)));
 
-    // Home card clicks
-    homeCards.forEach(card => {
-      if (card.dataset.view) {
-        card.addEventListener('click', (e) => {
-          if (e.target.closest('.home-card')) {
-            const viewName = card.dataset.view;
-            if (viewName === 'quiz') {
-              this.startQuiz();
-            } else if (viewName === 'study') {
-              uiRenderer.renderStudyCategories(this.allQuestions);
-              uiRenderer.showView('study');
-            } else if (viewName === 'signs') {
-              uiRenderer.renderSignsGallery(this.roadSigns);
-              uiRenderer.showView('signs');
-            } else if (viewName === 'progress') {
-              uiRenderer.renderProgress(this.allQuestions);
-              uiRenderer.showView('progress');
-            }
-          }
-        });
-      }
-    });
+    menuItems.forEach(item =>
+      item.addEventListener('click', () => {
+        this.navigateTo(item.dataset.view);
+        menu.classList.add('hidden');
+      }));
+
+    homeCards.forEach(card =>
+      card.addEventListener('click', () => this.navigateTo(card.dataset.view)));
 
     // Back buttons
     document.getElementById('quizBackBtn').addEventListener('click', () => {
-      uiRenderer.showView('home');
       uiRenderer.clearFeedback();
+      this.navigateTo('home');
     });
-    document.getElementById('studyBackBtn').addEventListener('click', () => uiRenderer.showView('home'));
-    document.getElementById('signsBackBtn').addEventListener('click', () => uiRenderer.showView('home'));
-    document.getElementById('progressBackBtn').addEventListener('click', () => uiRenderer.showView('home'));
+    document.getElementById('studyBackBtn').addEventListener('click', () => this.navigateTo('home'));
+    document.getElementById('signsBackBtn').addEventListener('click', () => this.navigateTo('home'));
+    document.getElementById('progressBackBtn').addEventListener('click', () => this.navigateTo('home'));
 
     // Sign modal close
     document.getElementById('signModalClose').addEventListener('click', () => {
       document.getElementById('signModal').classList.add('hidden');
     });
+  }
+
+  /**
+   * Central view router: renders the target view's content, switches to it,
+   * and syncs the navbar active state. Every nav entry point calls this.
+   */
+  navigateTo(viewName) {
+    switch (viewName) {
+      case 'quiz':
+        this.startQuiz();
+        break;
+      case 'study':
+        uiRenderer.renderStudyCategories(this.allQuestions);
+        uiRenderer.showView('study');
+        break;
+      case 'signs':
+        uiRenderer.renderSignsGallery(this.roadSigns);
+        uiRenderer.showView('signs');
+        break;
+      case 'progress':
+        uiRenderer.renderProgress(this.allQuestions);
+        uiRenderer.showView('progress');
+        break;
+      case 'home':
+      default:
+        uiRenderer.renderHomeStats();
+        uiRenderer.showView('home');
+        viewName = 'home';
+        break;
+    }
+    // Sync navbar active state
+    document.querySelectorAll('.nav-link').forEach(link =>
+      link.classList.toggle('active', link.dataset.view === viewName));
   }
 
   /**

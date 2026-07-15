@@ -17,25 +17,36 @@
     <!-- Header -->
     <header class="app-header">
       <div class="header-left">
+        <span class="app-brand"><i data-lucide="car"></i></span>
         <h1 class="app-title">Ohio DMV Test</h1>
       </div>
+
+      <!-- Persistent nav bar (desktop/tablet) -->
+      <nav class="navbar" aria-label="Primary">
+        <button class="nav-link active" data-view="home"><i data-lucide="home"></i><span>Home</span></button>
+        <button class="nav-link" data-view="quiz"><i data-lucide="file-pen-line"></i><span>Quiz</span></button>
+        <button class="nav-link" data-view="study"><i data-lucide="book-open"></i><span>Study</span></button>
+        <button class="nav-link" data-view="signs"><i data-lucide="signpost"></i><span>Road Signs</span></button>
+        <button class="nav-link" data-view="progress"><i data-lucide="bar-chart-3"></i><span>Progress</span></button>
+      </nav>
+
       <div class="header-right">
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Dark mode">
-          <span class="theme-icon">🌙</span>
+          <span class="theme-icon"><i data-lucide="moon"></i></span>
         </button>
         <button id="menuToggle" class="menu-toggle" aria-label="Menu">
-          <span class="menu-icon">☰</span>
+          <span class="menu-icon"><i data-lucide="menu"></i></span>
         </button>
       </div>
     </header>
 
-    <!-- Navigation Menu (mobile) -->
+    <!-- Navigation Menu (mobile dropdown) -->
     <nav id="menu" class="mobile-menu hidden">
-      <button class="menu-item" data-view="home">🏠 Home</button>
-      <button class="menu-item" data-view="quiz">📝 Quiz</button>
-      <button class="menu-item" data-view="study">📚 Study</button>
-      <button class="menu-item" data-view="signs">🚦 Road Signs</button>
-      <button class="menu-item" data-view="progress">📊 Progress</button>
+      <button class="menu-item" data-view="home"><i data-lucide="home"></i> Home</button>
+      <button class="menu-item" data-view="quiz"><i data-lucide="file-pen-line"></i> Quiz</button>
+      <button class="menu-item" data-view="study"><i data-lucide="book-open"></i> Study</button>
+      <button class="menu-item" data-view="signs"><i data-lucide="signpost"></i> Road Signs</button>
+      <button class="menu-item" data-view="progress"><i data-lucide="bar-chart-3"></i> Progress</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -51,25 +62,25 @@
 
           <div class="home-grid">
             <button class="home-card" id="startQuizBtn" data-view="quiz">
-              <div class="card-icon">📝</div>
+              <div class="card-icon"><i data-lucide="file-pen-line"></i></div>
               <div class="card-title">Start Quiz</div>
               <div class="card-desc">Take full 40-question test</div>
             </button>
 
             <button class="home-card" id="studyModeBtn" data-view="study">
-              <div class="card-icon">📚</div>
+              <div class="card-icon"><i data-lucide="book-open"></i></div>
               <div class="card-title">Study Mode</div>
               <div class="card-desc">Learn by category</div>
             </button>
 
             <button class="home-card" id="signsBtn" data-view="signs">
-              <div class="card-icon">🚦</div>
+              <div class="card-icon"><i data-lucide="signpost"></i></div>
               <div class="card-title">Road Signs</div>
               <div class="card-desc">Visual reference</div>
             </button>
 
             <button class="home-card" id="progressBtn" data-view="progress">
-              <div class="card-icon">📊</div>
+              <div class="card-icon"><i data-lucide="bar-chart-3"></i></div>
               <div class="card-title">Progress</div>
               <div class="card-desc">Your stats</div>
             </button>
@@ -97,7 +108,7 @@
                target="_blank"
                rel="noopener noreferrer"
                class="resource-link">
-              📘 Download Official Ohio Driver Manual (PDF)
+              <i data-lucide="book-marked"></i> Download Official Ohio Driver Manual (PDF)
             </a>
             <p class="resource-note">HSY 7607 - Digest of Ohio Motor Vehicle Laws from the Ohio Department of Public Safety</p>
           </div>
@@ -109,13 +120,13 @@
         <div class="quiz-container">
 
           <div class="quiz-header">
-            <button class="quiz-back" id="quizBackBtn">← Back</button>
+            <button class="quiz-back" id="quizBackBtn"><i data-lucide="arrow-left"></i> Back</button>
             <div class="quiz-progress">
               <div class="progress-ring" id="progressRing">
                 <span id="questionCounter">1/40</span>
               </div>
             </div>
-            <button class="quiz-menu" id="quizMenuBtn">⋮</button>
+            <button class="quiz-menu" id="quizMenuBtn"><i data-lucide="more-vertical"></i></button>
           </div>
 
           <div class="quiz-content">
@@ -134,8 +145,8 @@
               </div>
 
               <div class="quiz-actions">
-                <button id="prevBtn" class="btn btn-secondary" disabled>← Previous</button>
-                <button id="nextBtn" class="btn btn-primary" disabled>Next →</button>
+                <button id="prevBtn" class="btn btn-secondary" disabled><i data-lucide="arrow-left"></i> Previous</button>
+                <button id="nextBtn" class="btn btn-primary" disabled>Next <i data-lucide="arrow-right"></i></button>
                 <button id="skipBtn" class="btn btn-ghost">Skip</button>
               </div>
             </div>
@@ -150,7 +161,7 @@
       <!-- Study Mode Screen -->
       <section id="studyView" class="view">
         <div class="study-container">
-          <button class="study-back" id="studyBackBtn">← Back</button>
+          <button class="study-back" id="studyBackBtn"><i data-lucide="arrow-left"></i> Back</button>
 
           <h2>Study Mode</h2>
           <p class="subtitle">Learn by category. No timer. Unlimited attempts.</p>
@@ -164,9 +175,9 @@
       <!-- Road Signs Screen -->
       <section id="signsView" class="view">
         <div class="signs-container">
-          <button class="signs-back" id="signsBackBtn">← Back</button>
+          <button class="signs-back" id="signsBackBtn"><i data-lucide="arrow-left"></i> Back</button>
 
-          <h2>🚦 Road Signs Gallery</h2>
+          <h2><i data-lucide="signpost"></i> Road Signs Gallery</h2>
 
           <div class="signs-filter">
             <input type="text" id="signsSearch" placeholder="Search signs..." class="search-input">
@@ -188,9 +199,9 @@
       <!-- Progress Screen -->
       <section id="progressView" class="view">
         <div class="progress-container">
-          <button class="progress-back" id="progressBackBtn">← Back</button>
+          <button class="progress-back" id="progressBackBtn"><i data-lucide="arrow-left"></i> Back</button>
 
-          <h2>📊 My Progress</h2>
+          <h2><i data-lucide="bar-chart-3"></i> My Progress</h2>
 
           <div class="progress-summary">
             <div class="readiness-ring">
@@ -228,7 +239,7 @@
             <!-- Weak areas listed here -->
           </div>
 
-          <button id="practiceWeakBtn" class="btn btn-primary" disabled>🔥 Practice Weak Areas</button>
+          <button id="practiceWeakBtn" class="btn btn-primary" disabled><i data-lucide="flame"></i> Practice Weak Areas</button>
         </div>
       </section>
 
@@ -239,14 +250,14 @@
   <!-- Hidden detail modals -->
   <div id="signModal" class="modal hidden">
     <div class="modal-content">
-      <button class="modal-close" id="signModalClose">✕</button>
+      <button class="modal-close" id="signModalClose"><i data-lucide="x"></i></button>
       <div id="signModalBody"></div>
     </div>
   </div>
 
   <div id="quizResultsModal" class="modal hidden">
     <div class="modal-content modal-large">
-      <button class="modal-close" id="quizResultsClose">✕</button>
+      <button class="modal-close" id="quizResultsClose"><i data-lucide="x"></i></button>
       <div id="quizResultsBody"></div>
     </div>
   </div>

@@ -217,7 +217,7 @@ class QuizEngine {
       readyForTest: overall >= 0.85,
       message:
         overall >= 0.85
-          ? '✓ Ready! You can take the real test now.'
+          ? 'Ready! You can take the real test now.'
           : `Focus on weak areas to improve. Current: ${Math.round(overall * 100)}%`,
     };
   }

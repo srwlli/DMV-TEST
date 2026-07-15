@@ -73,18 +73,7 @@ html[data-theme="dark"] .option-button.incorrect {
   background: #2d1113;
 }
 
-/* Theme Toggle Indicator */
-html[data-theme="dark"] .theme-toggle::before {
-  content: "☀️";
-}
-
-html[data-theme="light"] .theme-toggle::before {
-  content: "🌙";
-}
-
-html[data-theme="dark"] .theme-icon {
-  display: none;
-}
+/* Theme toggle icon (moon/sun) is set as a Lucide icon in app.js — no emoji. */
 
 /* Background Colors - Dark */
 html[data-theme="dark"] .home-stats,

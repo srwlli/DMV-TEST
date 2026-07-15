@@ -23,12 +23,19 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(BASE_DIR, req.url);
-
-  // Handle trailing slashes and default to index.html
-  if (filePath.endsWith('/')) {
-    filePath = path.join(filePath, 'index.html');
+  // Strip query string / hash, and default a directory request to index.html.
+  let urlPath = decodeURIComponent(req.url.split('?')[0].split('#')[0]);
+  if (urlPath.endsWith('/')) {
+    urlPath += 'index.html';
   }
+  let filePath = path.join(BASE_DIR, urlPath);
+
+  // If the resolved path is a directory, serve its index.html.
+  try {
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    }
+  } catch (_) { /* fall through to readFile error handling */ }
 
   const ext = path.extname(filePath).toLowerCase();
   const contentType = MIME_TYPES[ext] || 'application/octet-stream';
