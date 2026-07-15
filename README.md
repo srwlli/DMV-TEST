@@ -23,29 +23,28 @@ A mobile-first, interactive study tool for students preparing for the Ohio BMV k
 
 ## Project Structure
 
+The app is served from the repo root so GitHub Pages (branch source) can host it directly.
+
 ```
 DMV-TEST/
-├── docs/                   # Documentation & specifications
-│   ├── RESEARCH.md        # Ohio BMV official requirements & findings
-│   ├── DESIGN.md          # UI/UX design specs & component library
-│   ├── LEARNING-METHODS.md # Pedagogical approach & quiz design
-│   └── API.md             # Data structure & quiz bank schema
-├── src/
-│   ├── index.html         # Main app shell
-│   ├── app.js             # Core application logic
-│   ├── quiz-engine.js     # Quiz logic, scoring, progress tracking
-│   ├── ui.js              # UI component rendering
-│   └── styles/
-│       ├── main.css       # Core styles
-│       └── dark-mode.css  # Dark mode theme
+├── index.html         # Main app shell (served at site root)
+├── app.js             # Core application logic
+├── quiz-engine.js     # Quiz logic, scoring, progress tracking
+├── ui.js              # UI component rendering
+├── styles/
+│   ├── main.css       # Core styles
+│   └── dark-mode.css  # Dark mode theme
 ├── data/
-│   ├── questions.json     # 40+ verified test questions
-│   ├── road-signs.json    # Road sign catalog (100+ signs)
-│   └── topics.json        # Learning topic structure
-├── tests/
-│   └── quiz.test.js       # Quiz engine tests
-└── .gitignore
-
+│   ├── questions.js   # 40 verified test questions
+│   └── road-signs.js  # Road sign catalog (107 signs)
+├── docs/              # Documentation & specifications
+│   ├── RESEARCH.md    # Ohio BMV official requirements & findings
+│   ├── DESIGN.md      # UI/UX design specs & component library
+│   ├── LEARNING-METHODS.md # Pedagogical approach & quiz design
+│   └── API.md         # Data structure & quiz bank schema
+├── serve.js           # Local dev server (node serve.js)
+├── .nojekyll          # Tell Pages to serve raw static files
+└── README.md
 ```
 
 ## Development Roadmap
@@ -63,10 +62,8 @@ Visit [https://srwlli.github.io/DMV-TEST/](https://srwlli.github.io/DMV-TEST/) a
 ```bash
 git clone https://github.com/srwlli/DMV-TEST.git
 cd DMV-TEST
-# Simply open src/index.html in a browser
-# Or serve with any HTTP server:
-python -m http.server 8000
-# Then open http://localhost:8000/src/
+node serve.js                 # then open http://localhost:3000
+# Or any static server, e.g.:  python -m http.server 3000
 ```
 
 ## Official Resources

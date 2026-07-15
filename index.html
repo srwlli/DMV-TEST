@@ -1,14 +1,269 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ohio DMV Test - Redirecting...</title>
-  <script>
-    window.location.href = './src/';
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Interactive Ohio DMV Driver's Permit Test Prep - Study for your knowledge test">
+  <meta name="theme-color" content="#0366d6">
+
+  <title>Ohio DMV Test Prep - Interactive Study App</title>
+
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/dark-mode.css">
 </head>
 <body>
-  <p>Redirecting to the app... <a href="./src/">Click here if not redirected</a></p>
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <h1 class="app-title">Ohio DMV Test</h1>
+      </div>
+      <div class="header-right">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Dark mode">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="menuToggle" class="menu-toggle" aria-label="Menu">
+          <span class="menu-icon">☰</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Menu (mobile) -->
+    <nav id="menu" class="mobile-menu hidden">
+      <button class="menu-item" data-view="home">🏠 Home</button>
+      <button class="menu-item" data-view="quiz">📝 Quiz</button>
+      <button class="menu-item" data-view="study">📚 Study</button>
+      <button class="menu-item" data-view="signs">🚦 Road Signs</button>
+      <button class="menu-item" data-view="progress">📊 Progress</button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+
+      <!-- Home Screen -->
+      <section id="homeView" class="view active">
+        <div class="home-container">
+          <div class="home-hero">
+            <h2>Ohio DMV Driver's Permit Test Prep</h2>
+            <p class="subtitle">Master the knowledge test. Pass with confidence.</p>
+          </div>
+
+          <div class="home-grid">
+            <button class="home-card" id="startQuizBtn" data-view="quiz">
+              <div class="card-icon">📝</div>
+              <div class="card-title">Start Quiz</div>
+              <div class="card-desc">Take full 40-question test</div>
+            </button>
+
+            <button class="home-card" id="studyModeBtn" data-view="study">
+              <div class="card-icon">📚</div>
+              <div class="card-title">Study Mode</div>
+              <div class="card-desc">Learn by category</div>
+            </button>
+
+            <button class="home-card" id="signsBtn" data-view="signs">
+              <div class="card-icon">🚦</div>
+              <div class="card-title">Road Signs</div>
+              <div class="card-desc">Visual reference</div>
+            </button>
+
+            <button class="home-card" id="progressBtn" data-view="progress">
+              <div class="card-icon">📊</div>
+              <div class="card-title">Progress</div>
+              <div class="card-desc">Your stats</div>
+            </button>
+          </div>
+
+          <div class="home-stats">
+            <div class="stat-box">
+              <div class="stat-value" id="bestScore">—</div>
+              <div class="stat-label">Best Score</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="lastSession">—</div>
+              <div class="stat-label">Last Session</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="streak">0</div>
+              <div class="stat-label">Day Streak</div>
+            </div>
+          </div>
+
+          <div class="resources-section">
+            <h3>Official Resources</h3>
+            <p>Study materials based on the official Ohio BMV handbook:</p>
+            <a href="https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="resource-link">
+              📘 Download Official Ohio Driver Manual (PDF)
+            </a>
+            <p class="resource-note">HSY 7607 - Digest of Ohio Motor Vehicle Laws from the Ohio Department of Public Safety</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz Screen -->
+      <section id="quizView" class="view">
+        <div class="quiz-container">
+
+          <div class="quiz-header">
+            <button class="quiz-back" id="quizBackBtn">← Back</button>
+            <div class="quiz-progress">
+              <div class="progress-ring" id="progressRing">
+                <span id="questionCounter">1/40</span>
+              </div>
+            </div>
+            <button class="quiz-menu" id="quizMenuBtn">⋮</button>
+          </div>
+
+          <div class="quiz-content">
+            <div class="question-card" id="questionCard">
+              <div class="question-number">Question <span id="qNumber">1</span> of 40</div>
+              <div class="question-category" id="qCategory">Road Signs</div>
+
+              <div class="question-image-container" id="qImageContainer">
+                <img id="qImage" src="" alt="" class="question-image">
+              </div>
+
+              <h3 class="question-text" id="qText"></h3>
+
+              <div class="options-group" id="optionsGroup">
+                <!-- Options rendered here by app.js -->
+              </div>
+
+              <div class="quiz-actions">
+                <button id="prevBtn" class="btn btn-secondary" disabled>← Previous</button>
+                <button id="nextBtn" class="btn btn-primary" disabled>Next →</button>
+                <button id="skipBtn" class="btn btn-ghost">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="feedbackContainer" class="feedback-container hidden">
+            <!-- Feedback shown here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Study Mode Screen -->
+      <section id="studyView" class="view">
+        <div class="study-container">
+          <button class="study-back" id="studyBackBtn">← Back</button>
+
+          <h2>Study Mode</h2>
+          <p class="subtitle">Learn by category. No timer. Unlimited attempts.</p>
+
+          <div class="category-list" id="categoryList">
+            <!-- Categories rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Road Signs Screen -->
+      <section id="signsView" class="view">
+        <div class="signs-container">
+          <button class="signs-back" id="signsBackBtn">← Back</button>
+
+          <h2>🚦 Road Signs Gallery</h2>
+
+          <div class="signs-filter">
+            <input type="text" id="signsSearch" placeholder="Search signs..." class="search-input">
+            <select id="signsFilter" class="filter-select">
+              <option value="">All Signs</option>
+              <option value="regulatory">Regulatory</option>
+              <option value="warning">Warning</option>
+              <option value="guide">Guide</option>
+              <option value="work-zone">Work Zone</option>
+            </select>
+          </div>
+
+          <div class="signs-grid" id="signsGrid">
+            <!-- Signs rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Progress Screen -->
+      <section id="progressView" class="view">
+        <div class="progress-container">
+          <button class="progress-back" id="progressBackBtn">← Back</button>
+
+          <h2>📊 My Progress</h2>
+
+          <div class="progress-summary">
+            <div class="readiness-ring">
+              <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" class="ring-bg"></circle>
+                <circle cx="50" cy="50" r="45" class="ring-fill" id="readinessRing"></circle>
+              </svg>
+              <div class="readiness-value">
+                <span id="readinessPercent">—</span>%
+              </div>
+              <div class="readiness-label" id="readinessLabel">Not started</div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-label">Sessions</div>
+              <div class="stat-value" id="statSessions">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Accuracy</div>
+              <div class="stat-value" id="statAccuracy">—</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Mastered</div>
+              <div class="stat-value" id="statMastered">0</div>
+            </div>
+          </div>
+
+          <div class="category-scores" id="categoryScores">
+            <!-- Category breakdown rendered here -->
+          </div>
+
+          <div class="weak-areas" id="weakAreas">
+            <!-- Weak areas listed here -->
+          </div>
+
+          <button id="practiceWeakBtn" class="btn btn-primary" disabled>🔥 Practice Weak Areas</button>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Hidden detail modals -->
+  <div id="signModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="signModalClose">✕</button>
+      <div id="signModalBody"></div>
+    </div>
+  </div>
+
+  <div id="quizResultsModal" class="modal hidden">
+    <div class="modal-content modal-large">
+      <button class="modal-close" id="quizResultsClose">✕</button>
+      <div id="quizResultsBody"></div>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="data/questions.js" defer></script>
+  <script src="data/road-signs.js" defer></script>
+  <script src="quiz-engine.js" defer></script>
+  <script src="ui.js" defer></script>
+  <script src="app.js" defer></script>
 </body>
 </html>

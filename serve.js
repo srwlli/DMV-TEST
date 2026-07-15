@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = 3000;
-const BASE_DIR = path.join(__dirname, 'src');
+const BASE_DIR = __dirname;
 
 const MIME_TYPES = {
   '.html': 'text/html',
