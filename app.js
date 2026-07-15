@@ -106,6 +106,10 @@ class DMVTestApp {
     homeCards.forEach(card =>
       card.addEventListener('click', () => this.navigateTo(card.dataset.view)));
 
+    // Footer links with data-view (e.g. About) route through navigateTo too.
+    document.querySelectorAll('.footer-link-btn[data-view]').forEach(btn =>
+      btn.addEventListener('click', () => this.navigateTo(btn.dataset.view)));
+
     // In-page back buttons on study/signs/progress/about were removed — users
     // navigate via the navbar/menu or swipe back. The quiz header has its own
     // "previous question" control (wired in setupQuizControls).

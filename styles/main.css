@@ -977,7 +977,7 @@ body {
 
 /* Modal */
 .modal {
-  display: none;
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
@@ -988,11 +988,17 @@ body {
   align-items: center;
   justify-content: center;
   padding: var(--spacing-lg);
+  animation: fadeIn 0.3s ease;
 }
 
+/* JS toggles .hidden on modals — hide when hidden, show otherwise. */
+.modal.hidden {
+  display: none;
+}
+
+/* Back-compat: also support a .visible flag if used. */
 .modal.visible {
   display: flex;
-  animation: fadeIn 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -1113,6 +1119,55 @@ body {
 }
 
 /* Utility Classes */
+/* ─── Footer ─── */
+.app-footer {
+  margin-top: auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-secondary);
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.footer-links a,
+.footer-link-btn {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.footer-links a:hover,
+.footer-link-btn:hover {
+  text-decoration: underline;
+}
+
+.footer-dot {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.footer-note {
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
 .hidden {
   display: none !important;
 }
