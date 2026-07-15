@@ -108,6 +108,7 @@ class DMVTestApp {
     document.getElementById('studyBackBtn').addEventListener('click', () => this.navigateTo('home'));
     document.getElementById('signsBackBtn').addEventListener('click', () => this.navigateTo('home'));
     document.getElementById('progressBackBtn').addEventListener('click', () => this.navigateTo('home'));
+    document.getElementById('aboutBackBtn').addEventListener('click', () => this.navigateTo('home'));
 
     // Sign modal close
     document.getElementById('signModalClose').addEventListener('click', () => {
@@ -135,6 +136,9 @@ class DMVTestApp {
       case 'progress':
         uiRenderer.renderProgress(this.allQuestions);
         uiRenderer.showView('progress');
+        break;
+      case 'about':
+        uiRenderer.showView('about');
         break;
       case 'home':
       default:

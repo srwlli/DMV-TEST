@@ -28,6 +28,7 @@
         <button class="nav-link" data-view="study"><i data-lucide="book-open"></i><span>Study</span></button>
         <button class="nav-link" data-view="signs"><i data-lucide="signpost"></i><span>Road Signs</span></button>
         <button class="nav-link" data-view="progress"><i data-lucide="bar-chart-3"></i><span>Progress</span></button>
+        <button class="nav-link" data-view="about"><i data-lucide="info"></i><span>About</span></button>
       </nav>
 
       <div class="header-right">
@@ -47,6 +48,7 @@
       <button class="menu-item" data-view="study"><i data-lucide="book-open"></i> Study</button>
       <button class="menu-item" data-view="signs"><i data-lucide="signpost"></i> Road Signs</button>
       <button class="menu-item" data-view="progress"><i data-lucide="bar-chart-3"></i> Progress</button>
+      <button class="menu-item" data-view="about"><i data-lucide="info"></i> About</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -240,6 +242,82 @@
           </div>
 
           <button id="practiceWeakBtn" class="btn btn-primary" disabled><i data-lucide="flame"></i> Practice Weak Areas</button>
+        </div>
+      </section>
+
+      <!-- About Screen -->
+      <section id="aboutView" class="view">
+        <div class="about-container">
+          <button class="about-back" id="aboutBackBtn"><i data-lucide="arrow-left"></i> Back</button>
+
+          <h2><i data-lucide="info"></i> About This App</h2>
+          <p class="subtitle">Where the study material comes from, and how it was built.</p>
+
+          <div class="about-card">
+            <h3><i data-lucide="book-marked"></i> The source material</h3>
+            <p>
+              Every question in this app is based on the official
+              <strong>Ohio Driver Manual — "Digest of Ohio Motor Vehicle Laws"
+              (HSY 7607)</strong>, published by the Ohio Department of Public Safety
+              and Ohio BMV. It is the single official study document for the Ohio
+              knowledge test.
+            </p>
+            <a href="https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf"
+               target="_blank" rel="noopener noreferrer" class="about-link">
+              <i data-lucide="external-link"></i> Read the official manual (PDF)
+            </a>
+          </div>
+
+          <div class="about-card">
+            <h3><i data-lucide="shield-check"></i> The 10 official questions</h3>
+            <p>
+              Ohio publishes an official
+              <a href="https://www.bmv.ohio.gov/dl-sample-test.aspx" target="_blank"
+                 rel="noopener noreferrer">Sample Knowledge Test</a> of
+              <strong>10 questions</strong> — the only real, BMV-authored questions
+              available to the public. All 10 are included here, marked with a
+              <span class="official-inline"><i data-lucide="shield-check"></i> Official BMV</span>
+              badge so you can spot them.
+            </p>
+          </div>
+
+          <div class="about-card">
+            <h3><i data-lucide="git-branch"></i> How the rest were built</h3>
+            <p>
+              The real exam draws 40 questions from a secured pool Ohio does not
+              publish — so no app can show "the real test." Instead, we studied the
+              10 official questions to learn the test's <strong>style</strong>
+              (scenario- and threshold-based, drawn from across the whole manual),
+              then wrote additional questions the same way:
+            </p>
+            <ul class="about-steps">
+              <li><strong>Read the manual</strong> — extracted the text of all 55 pages.</li>
+              <li><strong>Pulled verified facts</strong> — each question's answer is a rule stated in the manual (e.g. residential speed 25 mph, fire hydrant 10 ft).</li>
+              <li><strong>Cited the page</strong> — every question links to the exact manual page that proves its answer.</li>
+              <li><strong>Matched the official style</strong> — scenarios and thresholds, weighted like the real sample (rules-heavy).</li>
+            </ul>
+            <p>
+              These are labeled <em>manual-verified</em>. Nothing appears in the app
+              without a source you can check.
+            </p>
+          </div>
+
+          <div class="about-card">
+            <h3><i data-lucide="signpost"></i> The road signs</h3>
+            <p>
+              Sign images are the official federal <strong>MUTCD</strong> standard
+              signs (public domain, U.S. Department of Transportation) — the same
+              signs Ohio uses. Each sign is labeled with its standard code.
+            </p>
+          </div>
+
+          <div class="about-card about-disclaimer">
+            <p>
+              <strong>Not affiliated with the Ohio BMV.</strong> This is a free,
+              community-built study tool. Always confirm current rules against the
+              official manual before your test.
+            </p>
+          </div>
         </div>
       </section>
 

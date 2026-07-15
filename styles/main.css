@@ -1188,7 +1188,7 @@ body {
   text-decoration: underline;
 }
 
-/* ─── Road-sign images (cropped from manual — Category C) ─── */
+/* ─── Road-sign images (MUTCD SVGs) ─── */
 .sign-img {
   max-width: 100%;
   max-height: 64px;
@@ -1199,4 +1199,97 @@ body {
   max-width: 180px;
   max-height: 180px;
   object-fit: contain;
+}
+
+/* ─── About page ─── */
+.about-container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.about-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.about-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 var(--spacing-md);
+  color: var(--text-primary);
+}
+
+.about-card h3 i {
+  width: 20px;
+  height: 20px;
+  color: var(--primary);
+}
+
+.about-card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--spacing-md);
+}
+
+.about-card p:last-child {
+  margin-bottom: 0;
+}
+
+.about-steps {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: var(--spacing-lg);
+  margin: 0 0 var(--spacing-md);
+}
+
+.about-steps li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.about-link:hover {
+  text-decoration: underline;
+}
+
+.about-link i {
+  width: 16px;
+  height: 16px;
+}
+
+.about-disclaimer {
+  background: var(--bg-tertiary);
+  border-style: dashed;
+}
+
+/* Inline official badge (used in About + on quiz questions) */
+.official-inline,
+.official-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #1a7f37;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.official-inline i,
+.official-badge i {
+  width: 13px;
+  height: 13px;
 }
