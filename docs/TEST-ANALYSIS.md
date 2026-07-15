@@ -6,6 +6,27 @@ about the real test — and how to build more realistic, sourced questions.
 **Sources (all official):**
 - Ohio Driver Manual HSY 7607 (`manual/hsy7607.pdf`, 55 PDF pages)
 - Official BMV Sample Test: https://www.bmv.ohio.gov/dl-sample-test.aspx
+- **Ohio Administrative Code Rule 4501:1-1-08** (the test-structure regulation):
+  https://codes.ohio.gov/ohio-administrative-code/rule-4501:1-1-08
+
+## ⚠️ CORRECTION (2026-07-15): the 20/20 split IS official
+
+An earlier version of this doc called the "20 signs / 20 rules" split a
+third-party myth. **That was wrong.** OAC Rule 4501:1-1-08 defines the written
+test in two parts:
+- **Part Two — Traffic laws / rules of the road:** minimum **20** questions,
+  equally weighted; must answer **75%** correctly.
+- **Part Three — Highway warnings & traffic signs:** minimum **20** questions,
+  equally weighted; must answer **75%** correctly.
+
+So the real test is **20 rules + 20 signs = 40**, and each part must be passed
+INDEPENDENTLY at 75% (15/20 each) — not merely 75% overall. The manual and the
+10-question sample don't state this; the Administrative Code does.
+
+**Implications for the app:**
+1. Need **20 road-sign questions** (currently only 8 → author 12 more).
+2. Quiz selection should enforce a true 20/20 split.
+3. Scoring should report per-section pass (15/20 each), not just overall 75%.
 
 **Key mechanical fact:** printed manual page + 3 = PDF page. So a fact on printed
 p.10 deep-links as `manual/hsy7607.pdf#page=13`. Verified against 3 anchors
