@@ -11,8 +11,14 @@
 
 ### Related Official Resources
 - [Ohio BMV Main Website](https://www.bmv.ohio.gov/dl-gdl.aspx)
-- [Official Sample Test](https://www.bmv.ohio.gov/dl-sample-test.aspx)
+- [Official Sample Test](https://www.bmv.ohio.gov/dl-sample-test.aspx) (10 questions)
 - [Forms & Documents](https://www.bmv.ohio.gov/forms-general.aspx)
+- [OAC Rule 4501:1-1-08](https://codes.ohio.gov/ohio-administrative-code/rule-4501:1-1-08) — the regulation defining the exam (the 20/20 split)
+
+### Verified Test Structure
+- **40 questions, 75% to pass** (manual p.4 / printed p.1)
+- **Two written parts: 20 traffic-law + 20 road-sign questions** (OAC 4501:1-1-08, "a minimum of twenty questions equally weighted" each)
+- Full sourced fact table: see [`OFFICIAL-TEST-FACTS.md`](./OFFICIAL-TEST-FACTS.md)
 
 ### Alternative Formats Available
 - **Spanish Manual** (HSY 0008)
@@ -28,4 +34,4 @@ All questions are based on official BMV test content and Ohio traffic laws as do
 
 ---
 
-**Last Updated:** 2026-07-14
+**Last Updated:** 2026-07-15

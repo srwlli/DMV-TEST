@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The Ohio driver's permit (knowledge) test is a 40-question multiple-choice exam administered by the Ohio Bureau of Motor Vehicles (BMV) covering traffic laws, road signs, and safe driving practices. Students must score 75% (30/40) to pass, with independent section pass requirements.
+The Ohio driver's permit (knowledge) test is a 40-question multiple-choice exam administered by the Ohio Bureau of Motor Vehicles (BMV) covering traffic laws, road signs, and safe driving practices. Students must score **75% (30/40)** to pass. Per Ohio Administrative Code 4501:1-1-08 the test is two written parts — **a minimum of 20 traffic-law questions and 20 road-sign questions**, each stated at 75%. See `OFFICIAL-TEST-FACTS.md` for the exact sourced wording.
 
 ---
 

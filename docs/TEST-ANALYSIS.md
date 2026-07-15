@@ -14,19 +14,24 @@ about the real test — and how to build more realistic, sourced questions.
 An earlier version of this doc called the "20 signs / 20 rules" split a
 third-party myth. **That was wrong.** OAC Rule 4501:1-1-08 defines the written
 test in two parts:
-- **Part Two — Traffic laws / rules of the road:** minimum **20** questions,
-  equally weighted; must answer **75%** correctly.
-- **Part Three — Highway warnings & traffic signs:** minimum **20** questions,
-  equally weighted; must answer **75%** correctly.
+- **Traffic laws / rules of the road:** "a minimum of twenty questions equally
+  weighted"; pass = 75%.
+- **Highway warnings & traffic signs:** "a minimum of twenty questions equally
+  weighted"; pass = 75%.
 
-So the real test is **20 rules + 20 signs = 40**, and each part must be passed
-INDEPENDENTLY at 75% (15/20 each) — not merely 75% overall. The manual and the
-10-question sample don't state this; the Administrative Code does.
+So the real test is **20 rules + 20 signs = 40**. The manual (p.4) states a
+**75% passage rate for the 40-question test**; the Administrative Code states
+75% for each written part.
+
+**Precision note:** the regulation does NOT contain explicit "must pass each part
+independently" wording — an interim edit overstated that. The per-part 75% is
+quoted per part in OAC; the manual quotes 75% overall. See
+`docs/OFFICIAL-TEST-FACTS.md` for the exact source wording (the canonical ref).
 
 **Implications for the app:**
 1. Need **20 road-sign questions** (currently only 8 → author 12 more).
 2. Quiz selection should enforce a true 20/20 split.
-3. Scoring should report per-section pass (15/20 each), not just overall 75%.
+3. Scoring reports each section's score (already shown) + overall 75% pass.
 
 **Key mechanical fact:** printed manual page + 3 = PDF page. So a fact on printed
 p.10 deep-links as `manual/hsy7607.pdf#page=13`. Verified against 3 anchors
@@ -124,9 +129,12 @@ Beyond the manual + sample test, still official (Ohio.gov / federal):
 - **Ohio Revised Code (ORC) Title 45** — the actual traffic statutes the manual
   summarizes (codes.ohio.gov). Authoritative for exact legal thresholds.
 - **Ohio BMV GDL page** — https://www.bmv.ohio.gov/dl-gdl.aspx (permit rules).
+- **Ohio Administrative Code 4501:1-1-08** — the regulation that establishes the
+  20-law + 20-sign test structure. https://codes.ohio.gov/ohio-administrative-code/rule-4501:1-1-08
 - **NOT official / do not source from**: dmv.org, driving-tests.org, and other
-  third-party practice sites. They're where the unverified "20/20 split" and
-  fabricated questions come from.
+  third-party practice sites — they carry fabricated questions. (Note: the 20/20
+  split, which they also cite, turns out to BE official per OAC 4501:1-1-08 — but
+  verify claims against the primary source, not these sites.)
 
 ---
 
