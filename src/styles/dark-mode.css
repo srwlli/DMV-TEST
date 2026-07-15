@@ -230,6 +230,28 @@ html[data-theme="dark"] select:focus {
   outline-offset: 2px;
 }
 
+/* Resources Section - Dark */
+html[data-theme="dark"] .resources-section {
+  background: rgba(88, 166, 255, 0.1);
+  border-color: var(--primary);
+}
+
+html[data-theme="dark"] .resources-section h3 {
+  color: var(--primary);
+}
+
+html[data-theme="dark"] .resources-section p {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .resource-link {
+  background: var(--primary);
+}
+
+html[data-theme="dark"] .resource-link:hover {
+  background: var(--primary-hover);
+}
+
 /* Transition Animation for Theme Switch */
 html[data-theme] * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;

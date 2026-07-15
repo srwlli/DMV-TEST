@@ -269,6 +269,52 @@ body {
   margin-top: var(--spacing-xs);
 }
 
+/* Resources Section */
+.resources-section {
+  margin-top: var(--spacing-3xl);
+  padding: var(--spacing-xl);
+  background: #e7f2ff;
+  border: 1px solid #0366d6;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.resources-section h3 {
+  font-size: 16px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--primary);
+}
+
+.resources-section p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.resource-link {
+  display: inline-block;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+  touch-action: manipulation;
+}
+
+.resource-link:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.resource-note {
+  font-size: 11px !important;
+  color: var(--text-muted);
+  margin-top: var(--spacing-md);
+  font-style: italic;
+}
+
 /* Buttons */
 .btn {
   padding: 12px 20px;
