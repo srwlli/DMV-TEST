@@ -119,6 +119,16 @@ class DMVTestApp {
     document.getElementById('signModalClose').addEventListener('click', () => {
       document.getElementById('signModal').classList.add('hidden');
     });
+
+    // Quiz mode picker: each option starts that mode; close/backdrop dismiss.
+    const quizModeModal = document.getElementById('quizModeModal');
+    document.querySelectorAll('.mode-option').forEach(btn =>
+      btn.addEventListener('click', () => this.startQuiz(btn.dataset.mode)));
+    document.getElementById('quizModeClose').addEventListener('click', () =>
+      quizModeModal.classList.add('hidden'));
+    quizModeModal.addEventListener('click', (e) => {
+      if (e.target === quizModeModal) quizModeModal.classList.add('hidden');
+    });
   }
 
   /**
@@ -128,7 +138,7 @@ class DMVTestApp {
   navigateTo(viewName) {
     switch (viewName) {
       case 'quiz':
-        this.startQuiz();
+        this.openQuizModePicker();
         break;
       case 'study':
         uiRenderer.renderStudyCategories(this.allQuestions);
@@ -158,10 +168,21 @@ class DMVTestApp {
   }
 
   /**
-   * Start a quiz session
+   * Open the quiz mode-picker modal (Rules / Signs / State Test).
    */
-  startQuiz() {
-    this.currentSession = quizEngine.createQuizSession(this.allQuestions, 'quiz');
+  openQuizModePicker() {
+    const modal = document.getElementById('quizModeModal');
+    modal.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  /**
+   * Start a quiz session in the given mode:
+   *   'rules' (40 rules) | 'signs' (40 signs) | 'combined' (20+20 state test)
+   */
+  startQuiz(mode = 'combined') {
+    document.getElementById('quizModeModal').classList.add('hidden');
+    this.currentSession = quizEngine.createQuizSession(this.allQuestions, mode);
     this.currentSession.startTime = Date.now();
     uiRenderer.showView('quiz');
     uiRenderer.renderQuestion(this.currentSession, 0);

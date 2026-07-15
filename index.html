@@ -331,6 +331,38 @@
 
   </div>
 
+  <!-- Quiz mode picker -->
+  <div id="quizModeModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="quizModeClose"><i data-lucide="x"></i></button>
+      <h2 class="modal-title">Choose a Quiz</h2>
+      <p class="modal-sub">Each quiz is 40 questions.</p>
+      <div class="mode-options">
+        <button class="mode-option" data-mode="rules">
+          <i data-lucide="book-open"></i>
+          <div class="mode-text">
+            <div class="mode-name">Rules</div>
+            <div class="mode-desc">40 traffic-law questions</div>
+          </div>
+        </button>
+        <button class="mode-option" data-mode="signs">
+          <i data-lucide="signpost"></i>
+          <div class="mode-text">
+            <div class="mode-name">Signs</div>
+            <div class="mode-desc">40 road-sign questions</div>
+          </div>
+        </button>
+        <button class="mode-option" data-mode="combined">
+          <i data-lucide="clipboard-check"></i>
+          <div class="mode-text">
+            <div class="mode-name">State Test</div>
+            <div class="mode-desc">20 rules + 20 signs — the official split</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Hidden detail modals -->
   <div id="signModal" class="modal hidden">
     <div class="modal-content">

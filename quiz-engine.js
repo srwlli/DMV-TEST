@@ -293,30 +293,56 @@ class QuizEngine {
   }
 
   /**
-   * Create a new quiz session
+   * Create a new quiz session.
+   *
+   * Modes:
+   *   'combined' — 40 questions: 20 road-signs + 20 traffic-rules (the official
+   *                Ohio structure, OAC 4501:1-1-08). The default "state test".
+   *   'rules'    — 40 questions, all traffic-rules.
+   *   'signs'    — 40 questions, all road-signs.
+   *   'study'    — the exact question set passed in (a study category); no draw.
+   *   'weak-areas' — the exact weak-area set passed in; no draw.
+   *
+   * For draw modes, `questions` is the full pool to draw from.
    */
-  createQuizSession(questions, mode = 'quiz') {
+  createQuizSession(questions, mode = 'combined') {
+    let selected;
+    switch (mode) {
+      case 'rules':
+        selected = this.pickFromCategory(questions, 'traffic-rules', 40);
+        break;
+      case 'signs':
+        selected = this.pickFromCategory(questions, 'road-signs', 40);
+        break;
+      case 'study':
+      case 'weak-areas':
+        selected = questions; // pre-selected set, use as-is
+        break;
+      case 'combined':
+      case 'quiz':
+      default:
+        selected = this.selectRandomQuestions(questions, 40);
+        break;
+    }
     return {
       session_id: `SES-${Date.now()}`,
       created_at: new Date().toISOString(),
       mode,
-      questions: mode === 'quiz' ? this.selectRandomQuestions(questions, 40) : questions,
+      questions: selected,
       currentIndex: 0,
       answers: [],
     };
   }
 
   /**
-   * Select questions for a test. Aims for `count` (default 40) with a balanced
-   * signs/rules split, but ADAPTS to the pool: if one category is short, it
-   * backfills from the other so the test always has exactly min(count, pool)
-   * questions — never a phantom "40" the pool can't fill.
+   * Combined state-test selection: aim for a 20/20 signs/rules split to `count`.
+   * Adapts to the pool — if one category is short, backfill from the other so
+   * the test always has exactly min(count, pool) questions.
    */
   selectRandomQuestions(allQuestions, count = 40) {
     const signs = this.shuffleArray(allQuestions.filter(q => q.category === 'road-signs'));
     const rules = this.shuffleArray(allQuestions.filter(q => q.category === 'traffic-rules'));
 
-    // Ideal balanced split, capped by what each category actually has.
     const half = Math.floor(count / 2);
     let takeSigns = Math.min(half, signs.length);
     let takeRules = Math.min(count - takeSigns, rules.length);
@@ -325,6 +351,14 @@ class QuizEngine {
 
     const selected = [...signs.slice(0, takeSigns), ...rules.slice(0, takeRules)];
     return this.shuffleArray(selected);
+  }
+
+  /**
+   * Single-category selection: up to `count` random questions of one category.
+   */
+  pickFromCategory(allQuestions, category, count = 40) {
+    const pool = this.shuffleArray(allQuestions.filter(q => q.category === category));
+    return pool.slice(0, count);
   }
 
   /**
