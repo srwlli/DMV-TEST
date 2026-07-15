@@ -595,11 +595,15 @@ class UIRenderer {
     const visual = sign.image_url
       ? `<img src="${sign.image_url}" alt="${sign.name}" class="sign-img-large">`
       : `<i data-lucide="signpost"></i>`;
+    const mutcd = sign.mutcd
+      ? `<div class="sign-mutcd">Official MUTCD sign ${sign.mutcd}</div>`
+      : '';
     body.innerHTML = `
       <div class="sign-detail">
         <h2>${sign.name}</h2>
         <div class="sign-emoji">${visual}</div>
         <div class="sign-type">Type: ${sign.type}</div>
+        ${mutcd}
         <p class="sign-description">${sign.description}</p>
         <p class="sign-meaning"><strong>Meaning:</strong> ${sign.meaning}</p>
       </div>

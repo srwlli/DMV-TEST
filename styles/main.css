@@ -1356,6 +1356,20 @@ body {
   object-fit: contain;
 }
 
+/* MUTCD signs render on their own colored backgrounds; keep the tile light in
+   both themes so transparent edges read cleanly and colors stay true. */
+.sign-image-small,
+.sign-detail .sign-emoji {
+  background: #ffffff;
+}
+
+.sign-mutcd {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: var(--spacing-sm) 0;
+}
+
 /* ─── About page ─── */
 .about-container {
   max-width: 720px;
