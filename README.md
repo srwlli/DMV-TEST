@@ -1,4 +1,4 @@
-# Ohio DMV Driver's Permit Test Prep App
+# Ohio DMV Test
 
 A mobile-first, interactive study tool for students preparing for the Ohio BMV knowledge test.
 

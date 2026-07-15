@@ -252,18 +252,15 @@ body {
   color: var(--text-secondary);
 }
 
+/* Home action grid — 2×2 on every screen size */
 .home-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-3xl);
 }
 
 @media (min-width: 640px) {
-  .home-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   /* Desktop/tablet: show the persistent nav bar, hide the hamburger */
   .navbar {
     display: flex;
@@ -282,10 +279,11 @@ body {
   cursor: pointer;
   transition: var(--transition);
   touch-action: manipulation;
-  min-height: 120px;
+  min-height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: var(--spacing-md);
 }
 
@@ -296,11 +294,19 @@ body {
 }
 
 .card-icon {
-  font-size: 32px;
+  color: var(--primary);
+  display: flex;
+}
+
+.card-icon i {
+  width: 48px;
+  height: 48px;
+  stroke-width: 1.75;
 }
 
 .card-title {
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
@@ -356,16 +362,34 @@ body {
   margin-bottom: var(--spacing-lg);
 }
 
+/* Two official-resource buttons, side by side (1×2 inline) */
+.resource-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
 .resource-link {
-  display: inline-block;
-  padding: var(--spacing-lg) var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: var(--spacing-lg) var(--spacing-md);
   background: var(--primary);
   color: white;
   border-radius: var(--radius-sm);
   text-decoration: none;
   font-weight: 600;
+  font-size: 14px;
+  text-align: center;
   transition: var(--transition);
   touch-action: manipulation;
+}
+
+.resource-link i {
+  width: 22px;
+  height: 22px;
 }
 
 .resource-link:hover {

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="description" content="Interactive Ohio DMV Driver's Permit Test Prep - Study for your knowledge test">
+  <meta name="description" content="Ohio DMV Test - Study for your Ohio knowledge (permit) test">
   <meta name="theme-color" content="#0366d6">
 
-  <title>Ohio DMV Test Prep - Interactive Study App</title>
+  <title>Ohio DMV Test</title>
 
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/dark-mode.css">
@@ -58,33 +58,29 @@
       <section id="homeView" class="view active">
         <div class="home-container">
           <div class="home-hero">
-            <h2>Ohio DMV Driver's Permit Test Prep</h2>
+            <h2>Ohio DMV Test</h2>
             <p class="subtitle">Master the knowledge test. Pass with confidence.</p>
           </div>
 
           <div class="home-grid">
             <button class="home-card" id="startQuizBtn" data-view="quiz">
               <div class="card-icon"><i data-lucide="file-pen-line"></i></div>
-              <div class="card-title">Start Quiz</div>
-              <div class="card-desc">Take full 40-question test</div>
+              <div class="card-title">Quiz</div>
             </button>
 
             <button class="home-card" id="studyModeBtn" data-view="study">
               <div class="card-icon"><i data-lucide="book-open"></i></div>
-              <div class="card-title">Study Mode</div>
-              <div class="card-desc">Learn by category</div>
+              <div class="card-title">Study</div>
             </button>
 
             <button class="home-card" id="signsBtn" data-view="signs">
               <div class="card-icon"><i data-lucide="signpost"></i></div>
-              <div class="card-title">Road Signs</div>
-              <div class="card-desc">Visual reference</div>
+              <div class="card-title">Signs</div>
             </button>
 
             <button class="home-card" id="progressBtn" data-view="progress">
               <div class="card-icon"><i data-lucide="bar-chart-3"></i></div>
-              <div class="card-title">Progress</div>
-              <div class="card-desc">Your stats</div>
+              <div class="card-title">Results</div>
             </button>
           </div>
 
@@ -105,14 +101,20 @@
 
           <div class="resources-section">
             <h3>Official Resources</h3>
-            <p>Study materials based on the official Ohio BMV handbook:</p>
-            <a href="https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="resource-link">
-              <i data-lucide="book-marked"></i> Download Official Ohio Driver Manual (PDF)
-            </a>
-            <p class="resource-note">HSY 7607 - Digest of Ohio Motor Vehicle Laws from the Ohio Department of Public Safety</p>
+            <p>Straight from the Ohio BMV:</p>
+            <div class="resource-links">
+              <a href="https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf"
+                 target="_blank" rel="noopener noreferrer" class="resource-link">
+                <i data-lucide="book-marked"></i>
+                <span>Driver Manual (PDF)</span>
+              </a>
+              <a href="https://www.bmv.ohio.gov/dl-sample-test.aspx"
+                 target="_blank" rel="noopener noreferrer" class="resource-link">
+                <i data-lucide="shield-check"></i>
+                <span>Official 10 Questions</span>
+              </a>
+            </div>
+            <p class="resource-note">HSY 7607 — Digest of Ohio Motor Vehicle Laws, Ohio Department of Public Safety</p>
           </div>
         </div>
       </section>
