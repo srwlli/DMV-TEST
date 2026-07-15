@@ -86,9 +86,10 @@ class DMVTestApp {
     const menuItems = document.querySelectorAll('.menu-item');
     const homeCards = document.querySelectorAll('.home-card[data-view]');
 
-    // Toggle mobile dropdown menu
+    // Toggle mobile dropdown menu. CSS shows it via the `.visible` class
+    // (.mobile-menu is display:none by default, .mobile-menu.visible is flex).
     menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
+      menu.classList.toggle('visible');
     });
 
     // Persistent navbar links + mobile menu items + home cards all route
@@ -99,21 +100,15 @@ class DMVTestApp {
     menuItems.forEach(item =>
       item.addEventListener('click', () => {
         this.navigateTo(item.dataset.view);
-        menu.classList.add('hidden');
+        menu.classList.remove('visible');
       }));
 
     homeCards.forEach(card =>
       card.addEventListener('click', () => this.navigateTo(card.dataset.view)));
 
-    // Back buttons
-    document.getElementById('quizBackBtn').addEventListener('click', () => {
-      uiRenderer.clearFeedback();
-      this.navigateTo('home');
-    });
-    document.getElementById('studyBackBtn').addEventListener('click', () => this.navigateTo('home'));
-    document.getElementById('signsBackBtn').addEventListener('click', () => this.navigateTo('home'));
-    document.getElementById('progressBackBtn').addEventListener('click', () => this.navigateTo('home'));
-    document.getElementById('aboutBackBtn').addEventListener('click', () => this.navigateTo('home'));
+    // In-page back buttons on study/signs/progress/about were removed — users
+    // navigate via the navbar/menu or swipe back. The quiz header has its own
+    // "previous question" control (wired in setupQuizControls).
 
     // Sign modal close
     document.getElementById('signModalClose').addEventListener('click', () => {
@@ -172,6 +167,10 @@ class DMVTestApp {
    */
   openQuizModePicker() {
     const modal = document.getElementById('quizModeModal');
+    // Highlight the user's last-used mode (persisted across sessions).
+    const lastMode = localStorage.getItem('lastQuizMode') || 'combined';
+    document.querySelectorAll('.mode-option').forEach(btn =>
+      btn.classList.toggle('mode-last', btn.dataset.mode === lastMode));
     modal.classList.remove('hidden');
     if (window.lucide) window.lucide.createIcons();
   }
@@ -181,6 +180,7 @@ class DMVTestApp {
    *   'rules' (40 rules) | 'signs' (40 signs) | 'combined' (20+20 state test)
    */
   startQuiz(mode = 'combined') {
+    localStorage.setItem('lastQuizMode', mode);
     document.getElementById('quizModeModal').classList.add('hidden');
     this.currentSession = quizEngine.createQuizSession(this.allQuestions, mode);
     this.currentSession.startTime = Date.now();
@@ -189,13 +189,17 @@ class DMVTestApp {
   }
 
   /**
-   * Quiz controls (prev, next, skip, submit)
+   * Quiz controls. Flow: tap selects an option (no lock), Next/Submit COMMITS
+   * the selection then advances (or finishes on the last question). The header
+   * chevron goes to the previous question; the header X exits the quiz.
    */
   setupQuizControls() {
-    const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const skipBtn = document.getElementById('skipBtn');
+    const prevBtn = document.getElementById('quizPrevBtn');
+    const exitBtn = document.getElementById('quizExitBtn');
 
+    // Header: previous question
     prevBtn.addEventListener('click', () => {
       if (this.currentSession && this.currentSession.currentIndex > 0) {
         this.currentSession.currentIndex--;
@@ -204,28 +208,39 @@ class DMVTestApp {
       }
     });
 
-    nextBtn.addEventListener('click', async () => {
-      if (!this.currentSession) return;
+    // Header: exit the quiz back to home
+    exitBtn.addEventListener('click', () => {
+      this.currentSession = null;
+      uiRenderer.clearFeedback();
+      this.navigateTo('home');
+    });
 
-      // Check if this is the last question
-      if (this.currentSession.currentIndex === this.currentSession.questions.length - 1) {
-        // Submit quiz
-        this.currentSession.endTime = Date.now();
-        const results = await quizEngine.completeQuizSession(this.currentSession);
+    // Next / Submit: commit the pending selection, then advance or finish.
+    nextBtn.addEventListener('click', async () => {
+      const s = this.currentSession;
+      if (!s) return;
+
+      const committed = await uiRenderer.commitSelection(s, s.currentIndex);
+      if (!committed) return; // nothing selected — shouldn't happen (btn gated)
+
+      if (s.currentIndex === s.questions.length - 1) {
+        s.endTime = Date.now();
+        const results = await quizEngine.completeQuizSession(s);
         await uiRenderer.renderQuizResults(results);
       } else {
-        // Move to next question
-        this.currentSession.currentIndex++;
+        s.currentIndex++;
         uiRenderer.clearFeedback();
-        uiRenderer.renderQuestion(this.currentSession, this.currentSession.currentIndex);
+        uiRenderer.renderQuestion(s, s.currentIndex);
       }
     });
 
+    // Skip: move on without committing an answer.
     skipBtn.addEventListener('click', () => {
-      if (this.currentSession && this.currentSession.currentIndex < this.currentSession.questions.length - 1) {
-        this.currentSession.currentIndex++;
+      const s = this.currentSession;
+      if (s && s.currentIndex < s.questions.length - 1) {
+        s.currentIndex++;
         uiRenderer.clearFeedback();
-        uiRenderer.renderQuestion(this.currentSession, this.currentSession.currentIndex);
+        uiRenderer.renderQuestion(s, s.currentIndex);
       }
     });
   }
@@ -279,29 +294,6 @@ class DMVTestApp {
     // Progress rendering handled in renderProgress
   }
 
-  /**
-   * Handle quiz menu (pause/exit)
-   */
-  setupQuizMenu() {
-    const quizMenuBtn = document.getElementById('quizMenuBtn');
-
-    quizMenuBtn.addEventListener('click', () => {
-      const menu = document.createElement('div');
-      menu.className = 'quiz-menu-dropdown';
-      menu.innerHTML = `
-        <button class="menu-option">Resume</button>
-        <button class="menu-option">Quit Quiz</button>
-      `;
-
-      menu.querySelector('.menu-option:nth-child(2)').addEventListener('click', () => {
-        this.currentSession = null;
-        uiRenderer.showView('home');
-        menu.remove();
-      });
-
-      document.body.appendChild(menu);
-    });
-  }
 
   /**
    * Utility: Load question data from file

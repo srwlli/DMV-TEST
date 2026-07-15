@@ -124,13 +124,13 @@
         <div class="quiz-container">
 
           <div class="quiz-header">
-            <button class="quiz-back" id="quizBackBtn"><i data-lucide="arrow-left"></i> Back</button>
+            <button class="quiz-hdr-btn" id="quizPrevBtn" aria-label="Previous question" disabled><i data-lucide="chevron-left"></i></button>
             <div class="quiz-progress">
               <div class="progress-ring" id="progressRing">
                 <span id="questionCounter">1/40</span>
               </div>
             </div>
-            <button class="quiz-menu" id="quizMenuBtn"><i data-lucide="more-vertical"></i></button>
+            <button class="quiz-hdr-btn" id="quizExitBtn" aria-label="Exit quiz"><i data-lucide="x"></i></button>
           </div>
 
           <div class="quiz-content">
@@ -149,7 +149,6 @@
               </div>
 
               <div class="quiz-actions">
-                <button id="prevBtn" class="btn btn-secondary" disabled><i data-lucide="arrow-left"></i> Previous</button>
                 <button id="nextBtn" class="btn btn-primary" disabled>Next <i data-lucide="arrow-right"></i></button>
                 <button id="skipBtn" class="btn btn-ghost">Skip</button>
               </div>
@@ -165,7 +164,6 @@
       <!-- Study Mode Screen -->
       <section id="studyView" class="view">
         <div class="study-container">
-          <button class="study-back" id="studyBackBtn"><i data-lucide="arrow-left"></i> Back</button>
 
           <h2>Study Mode</h2>
           <p class="subtitle">Learn by category. No timer. Unlimited attempts.</p>
@@ -179,7 +177,6 @@
       <!-- Road Signs Screen -->
       <section id="signsView" class="view">
         <div class="signs-container">
-          <button class="signs-back" id="signsBackBtn"><i data-lucide="arrow-left"></i> Back</button>
 
           <h2><i data-lucide="signpost"></i> Road Signs Gallery</h2>
 
@@ -203,7 +200,6 @@
       <!-- Progress Screen -->
       <section id="progressView" class="view">
         <div class="progress-container">
-          <button class="progress-back" id="progressBackBtn"><i data-lucide="arrow-left"></i> Back</button>
 
           <h2><i data-lucide="bar-chart-3"></i> My Progress</h2>
 
@@ -250,7 +246,6 @@
       <!-- About Screen -->
       <section id="aboutView" class="view">
         <div class="about-container">
-          <button class="about-back" id="aboutBackBtn"><i data-lucide="arrow-left"></i> Back</button>
 
           <h2><i data-lucide="info"></i> About This App</h2>
           <p class="subtitle">Where the study material comes from, and how it was built.</p>

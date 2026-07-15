@@ -39,7 +39,9 @@ class UIRenderer {
     // Clear previous options
     optionsGroup.innerHTML = '';
 
-    // Render options
+    // Render options. Tapping an option SELECTS it (highlight only) — it does
+    // not lock in the answer. The user commits by pressing Next/Submit.
+    const alreadyAnswered = session.answers.some(a => a.question_index === questionIndex);
     question.options.forEach((option, index) => {
       const optionBtn = document.createElement('button');
       optionBtn.className = 'option-button';
@@ -51,49 +53,92 @@ class UIRenderer {
         <span class="option-text">${option.text}</span>
       `;
 
-      optionBtn.addEventListener('click', (e) => {
-        this.handleAnswerSubmit(session, questionIndex, option.id, e.target.closest('.option-button'));
-      });
+      optionBtn.addEventListener('click', () => this.selectOption(session, questionIndex, option.id));
 
       optionsGroup.appendChild(optionBtn);
     });
 
+    // If this question was already answered (navigating back), restore the
+    // committed selection + feedback; otherwise reflect any pending selection.
+    if (alreadyAnswered) {
+      this.showCommittedState(session, questionIndex);
+    } else {
+      this.reflectSelection(session, questionIndex);
+    }
+
     this.updateProgressRing(questionIndex + 1, session.questions.length);
-    this.updateNavigationButtons(questionIndex, session.questions.length);
+    this.updateNavigationButtons(session, questionIndex);
   }
 
   /**
-   * Handle answer submission
+   * Select (not commit) an option — highlight it and enable Next/Submit.
    */
-  async handleAnswerSubmit(session, questionIndex, answerId, buttonElement) {
-    // Disable all options during feedback
+  selectOption(session, questionIndex, answerId) {
+    // A committed question is locked; ignore further taps.
+    if (session.answers.some(a => a.question_index === questionIndex)) return;
+
+    session.pendingSelection = session.pendingSelection || {};
+    session.pendingSelection[questionIndex] = answerId;
+    this.reflectSelection(session, questionIndex);
+
+    // Enable the commit (Next/Submit) button now that something is selected.
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  /**
+   * Visually mark the currently-selected (pending) option.
+   */
+  reflectSelection(session, questionIndex) {
+    const pending = session.pendingSelection && session.pendingSelection[questionIndex];
     document.querySelectorAll('.option-button').forEach(btn => {
+      btn.classList.toggle('selected', pending != null && btn.dataset.answerId === pending);
+    });
+    // Enable Next/Submit only if there is a selection for this question.
+    document.getElementById('nextBtn').disabled = pending == null;
+  }
+
+  /**
+   * Commit the pending selection for a question: record the attempt and show
+   * correct/incorrect feedback. Called by the Next/Submit handler.
+   * Returns true if committed, false if there was nothing to commit.
+   */
+  async commitSelection(session, questionIndex) {
+    // Already committed → nothing to do.
+    if (session.answers.some(a => a.question_index === questionIndex)) return true;
+
+    const answerId = session.pendingSelection && session.pendingSelection[questionIndex];
+    if (answerId == null) return false;
+
+    const { correct } = await quizEngine.submitAnswer(session, questionIndex, answerId);
+    // Tag the answer with its index so we can detect answered questions on back-nav.
+    session.answers[session.answers.length - 1].question_index = questionIndex;
+    session.answers[session.answers.length - 1].user_answer_id = answerId;
+
+    this.showCommittedState(session, questionIndex);
+    return true;
+  }
+
+  /**
+   * Render the locked correct/incorrect state + feedback for an answered
+   * question (used after commit and when navigating back to it).
+   */
+  showCommittedState(session, questionIndex) {
+    const question = session.questions[questionIndex];
+    const answer = session.answers.find(a => a.question_index === questionIndex);
+    const correctOptionId = question.options.find(o => o.correct).id;
+    const userAnswerId = answer ? answer.user_answer_id : null;
+
+    document.querySelectorAll('.option-button').forEach(btn => {
+      btn.classList.remove('selected');
       btn.style.pointerEvents = 'none';
-      btn.style.opacity = '0.6';
+      const id = btn.dataset.answerId;
+      if (id === correctOptionId) btn.classList.add('correct');
+      if (id === userAnswerId && userAnswerId !== correctOptionId) btn.classList.add('incorrect');
     });
 
-    const { correct, attempt } = await quizEngine.submitAnswer(session, questionIndex, answerId);
-    const question = session.questions[questionIndex];
-    const correctOptionId = question.options.find(o => o.correct).id;
-
-    // Highlight selected option
-    buttonElement.classList.add(correct ? 'correct' : 'incorrect');
-
-    // Highlight correct answer if wrong
-    if (!correct) {
-      document.querySelectorAll('.option-button').forEach(btn => {
-        if (btn.dataset.answerId === correctOptionId) {
-          btn.classList.add('correct');
-        }
-      });
-    }
-
-    // Show feedback
-    this.showFeedback(question, correct, attempt);
-
-    // Enable next button
+    const correct = userAnswerId === correctOptionId;
+    this.showFeedback(question, correct);
     document.getElementById('nextBtn').disabled = false;
-    document.getElementById('prevBtn').disabled = questionIndex === 0;
   }
 
   /**
@@ -187,19 +232,18 @@ class UIRenderer {
   }
 
   /**
-   * Update navigation buttons
+   * Update navigation buttons for the current question.
+   * - Header prev (quizPrevBtn) enabled unless on the first question.
+   * - Next/Submit label reflects last-question; disabled until the question
+   *   has a selection or is already committed (set by reflect/commit helpers).
    */
-  updateNavigationButtons(index, total) {
-    const prevBtn = document.getElementById('prevBtn');
+  updateNavigationButtons(session, index) {
+    const total = session.questions.length;
+    const prevBtn = document.getElementById('quizPrevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const isLast = index === total - 1;
 
-    prevBtn.disabled = index === 0;
-
-    // Next/Submit is disabled until this question is answered (re-enabled in
-    // handleAnswerSubmit). The LAST question shows "Submit" but is NOT disabled
-    // just for being last — only the answered-gate controls it.
-    nextBtn.disabled = true;
+    if (prevBtn) prevBtn.disabled = index === 0;
 
     if (isLast) {
       nextBtn.innerHTML = 'Submit Quiz <i data-lucide="check"></i>';
@@ -534,11 +578,9 @@ class UIRenderer {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(`${viewName}View`).classList.add('active');
 
-    // Close menu if open
+    // Close the mobile dropdown menu if open (shown via .visible).
     const menu = document.getElementById('menu');
-    if (!menu.classList.contains('hidden')) {
-      menu.classList.add('hidden');
-    }
+    if (menu) menu.classList.remove('visible');
   }
 
   /**

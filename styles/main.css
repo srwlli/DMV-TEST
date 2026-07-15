@@ -479,13 +479,33 @@ body {
   margin-bottom: var(--spacing-xl);
 }
 
-.quiz-back,
-.quiz-menu {
+.quiz-hdr-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
-  font-size: 18px;
+  color: var(--text-secondary);
   cursor: pointer;
   padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  touch-action: manipulation;
+}
+
+.quiz-hdr-btn i {
+  width: 24px;
+  height: 24px;
+}
+
+.quiz-hdr-btn:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.quiz-hdr-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .quiz-progress {
@@ -602,7 +622,10 @@ body {
 
 .option-button.selected {
   border-color: var(--primary);
+  border-width: 2px;
   background: #e7f2ff;
+  box-shadow: 0 0 0 2px rgba(3, 102, 214, 0.15);
+  font-weight: 600;
 }
 
 .option-button.correct {
@@ -1149,8 +1172,9 @@ body {
     grid-template-columns: 1fr;
   }
 
+  /* Keep the dashboard a 2×2 grid even on the smallest screens. */
   .home-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .signs-grid {
@@ -1334,6 +1358,12 @@ body {
   border-color: var(--primary);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+}
+
+/* Subtle "last used" accent on the mode you picked previously. */
+.mode-option.mode-last {
+  border-color: var(--primary);
+  background: rgba(3, 102, 214, 0.05);
 }
 
 .mode-option > i {
