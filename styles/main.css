@@ -113,44 +113,8 @@ body {
   align-items: center;
 }
 
-/* Persistent nav bar — hidden on mobile (hamburger takes over), shown ≥640px */
-.navbar {
-  display: none;
-  gap: var(--spacing-xs);
-  align-items: center;
-}
-
-.nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 15px;
-  font-weight: 600;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: var(--transition);
-  touch-action: manipulation;
-  white-space: nowrap;
-}
-
-.nav-link i {
-  width: 18px;
-  height: 18px;
-}
-
-.nav-link:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.nav-link.active {
-  background: var(--primary);
-  color: #fff;
-}
+/* Navigation is a single dropdown (see .nav-dropdown below) — the old
+   persistent .navbar row of buttons was removed. */
 
 .theme-toggle,
 .menu-toggle {
@@ -169,35 +133,55 @@ body {
   background: var(--bg-tertiary);
 }
 
-/* Mobile Menu */
-.mobile-menu {
-  display: none;
+/* Header nav dropdown — anchored under the hamburger (top-right), all sizes.
+   #menu is a sibling of .app-header, so we position it against the viewport
+   (fixed) rather than an ancestor. The header height is ~64px. */
+.nav-dropdown {
+  position: fixed;
+  top: 60px;
+  right: var(--spacing-md);
+  z-index: 200;
+  display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-light);
+  gap: 4px;
+  min-width: 200px;
+  padding: var(--spacing-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
-.mobile-menu.visible {
-  display: flex;
+.nav-dropdown.hidden {
+  display: none;
 }
 
 .menu-item {
-  padding: var(--spacing-lg);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--spacing-md);
+  background: transparent;
+  border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
+  color: var(--text-primary);
+  text-align: left;
+  width: 100%;
   transition: var(--transition);
   touch-action: manipulation;
 }
 
+.menu-item i {
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
+}
+
 .menu-item:hover {
   background: var(--bg-tertiary);
-  border-color: var(--primary);
 }
 
 /* Main Content */
@@ -264,16 +248,7 @@ body {
   margin-bottom: var(--spacing-3xl);
 }
 
-@media (min-width: 640px) {
-  /* Desktop/tablet: show the persistent nav bar, hide the hamburger */
-  .navbar {
-    display: flex;
-  }
-
-  .menu-toggle {
-    display: none;
-  }
-}
+/* The hamburger dropdown is the nav on all screen sizes now. */
 
 .home-card {
   padding: var(--spacing-xl);

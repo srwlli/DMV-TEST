@@ -20,28 +20,18 @@
         <h1 class="app-title">Ohio DMV Test</h1>
       </div>
 
-      <!-- Persistent nav bar (desktop/tablet) -->
-      <nav class="navbar" aria-label="Primary">
-        <button class="nav-link active" data-view="home"><i data-lucide="home"></i><span>Home</span></button>
-        <button class="nav-link" data-view="quiz"><i data-lucide="file-pen-line"></i><span>Quiz</span></button>
-        <button class="nav-link" data-view="study"><i data-lucide="book-open"></i><span>Study</span></button>
-        <button class="nav-link" data-view="signs"><i data-lucide="signpost"></i><span>Road Signs</span></button>
-        <button class="nav-link" data-view="progress"><i data-lucide="bar-chart-3"></i><span>Progress</span></button>
-        <button class="nav-link" data-view="about"><i data-lucide="info"></i><span>About</span></button>
-      </nav>
-
       <div class="header-right">
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Dark mode">
           <span class="theme-icon"><i data-lucide="moon"></i></span>
         </button>
-        <button id="menuToggle" class="menu-toggle" aria-label="Menu">
+        <button id="menuToggle" class="menu-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Menu">
           <span class="menu-icon"><i data-lucide="menu"></i></span>
         </button>
       </div>
     </header>
 
-    <!-- Navigation Menu (mobile dropdown) -->
-    <nav id="menu" class="mobile-menu hidden">
+    <!-- Navigation dropdown menu (all screen sizes) -->
+    <nav id="menu" class="nav-dropdown hidden" aria-label="Primary">
       <button class="menu-item" data-view="home"><i data-lucide="home"></i> Home</button>
       <button class="menu-item" data-view="quiz"><i data-lucide="file-pen-line"></i> Quiz</button>
       <button class="menu-item" data-view="study"><i data-lucide="book-open"></i> Study</button>
@@ -314,13 +304,10 @@
     <footer class="app-footer">
       <div class="footer-links">
         <a href="https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf"
-           target="_blank" rel="noopener noreferrer">Driver Manual</a>
+           target="_blank" rel="noopener noreferrer">Manual</a>
         <span class="footer-dot">·</span>
         <a href="https://www.bmv.ohio.gov/dl-sample-test.aspx"
-           target="_blank" rel="noopener noreferrer">Official Sample Test</a>
-        <span class="footer-dot">·</span>
-        <a href="https://codes.ohio.gov/ohio-administrative-code/rule-4501:1-1-08"
-           target="_blank" rel="noopener noreferrer">Test Regulation</a>
+           target="_blank" rel="noopener noreferrer">Sample Test</a>
         <span class="footer-dot">·</span>
         <button class="footer-link-btn" data-view="about">About</button>
       </div>

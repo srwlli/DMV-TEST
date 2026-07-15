@@ -34,7 +34,7 @@ const QUESTIONS = [
   {
     id: 'sign-001', category: 'road-signs', subcategory: 'regulatory-signs', difficulty: 'easy',
     text: 'What must you do at a red octagonal STOP sign?',
-    image_url: null,
+    image_url: 'assets/signs/manual/reg-stop.png',
     options: [
       { id: 'a', text: 'Slow down and proceed if the way looks clear', correct: false },
       { id: 'b', text: 'Come to a complete stop, then proceed when safe', correct: true },
@@ -73,7 +73,7 @@ const QUESTIONS = [
   {
     id: 'sign-004', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'You see a yellow diamond sign showing a circular arrangement of arrows. What does it warn of?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-roundabout.png',
     options: [
       { id: 'a', text: 'A roundabout ahead', correct: true },
       { id: 'b', text: 'A dead end', correct: false },
@@ -86,7 +86,7 @@ const QUESTIONS = [
   {
     id: 'sign-005', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'What does a yellow diamond sign with an "X" and the letters "RR" indicate?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-railroad.png',
     options: [
       { id: 'a', text: 'Rest area ahead', correct: false },
       { id: 'b', text: 'Railroad crossing ahead', correct: true },
@@ -112,7 +112,7 @@ const QUESTIONS = [
   {
     id: 'sign-007', category: 'road-signs', subcategory: 'regulatory-signs', difficulty: 'medium',
     text: 'What does a "Yield" sign require you to do?',
-    image_url: null,
+    image_url: 'assets/signs/manual/reg-yield.png',
     options: [
       { id: 'a', text: 'Always come to a complete stop', correct: false },
       { id: 'b', text: 'Stop only if a police officer is present', correct: false },
@@ -125,7 +125,7 @@ const QUESTIONS = [
   {
     id: 'sign-008', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign shows two arrows pointing in opposite directions. What does it mean?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-two-way.png',
     options: [
       { id: 'a', text: 'The road ahead is one way', correct: false },
       { id: 'b', text: 'Traffic travels in opposite directions (two-way traffic)', correct: true },
@@ -268,7 +268,7 @@ const QUESTIONS = [
   {
     id: 'sign-019', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign shows a downhill grade symbol. What does it warn?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-downhill.png',
     options: [
       { id: 'a', text: 'A steep downhill grade is ahead', correct: true },
       { id: 'b', text: 'A hill is ending', correct: false },
@@ -281,7 +281,7 @@ const QUESTIONS = [
   {
     id: 'sign-020', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign shows a bicycle symbol. What does it mean?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-bicycle-crossing.png',
     options: [
       { id: 'a', text: 'Bicycles are prohibited', correct: false },
       { id: 'b', text: 'A bicycle crossing is ahead — watch for cyclists', correct: true },
@@ -294,7 +294,7 @@ const QUESTIONS = [
   {
     id: 'sign-021', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign shows a sharp right turn symbol. What should you do?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-sharp-right.png',
     options: [
       { id: 'a', text: 'Speed up through the turn', correct: false },
       { id: 'b', text: 'Reduce speed and prepare for a sharp right turn ahead', correct: true },
@@ -307,7 +307,7 @@ const QUESTIONS = [
   {
     id: 'sign-022', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign warns "Limited Clearance Ahead." Who should be most concerned?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-limited-clearance.png',
     options: [
       { id: 'a', text: 'Motorcyclists', correct: false },
       { id: 'b', text: 'Drivers of tall vehicles, who must ensure enough height clearance', correct: true },
@@ -320,7 +320,7 @@ const QUESTIONS = [
   {
     id: 'sign-023', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign shows a roadway splitting into two directions ("Road Branches Ahead"). What should you do?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-road-branches.png',
     options: [
       { id: 'a', text: 'Stop and wait', correct: false },
       { id: 'b', text: 'Be prepared to select the proper lane or direction', correct: true },
@@ -346,7 +346,7 @@ const QUESTIONS = [
   {
     id: 'sign-025', category: 'road-signs', subcategory: 'regulatory-signs', difficulty: 'medium',
     text: 'A regulatory sign is used at intersections of one-way roads and freeway exit ramps. What does it indicate?',
-    image_url: null,
+    image_url: 'assets/signs/manual/reg-one-way.png',
     options: [
       { id: 'a', text: 'A one-way road / the direction traffic must travel', correct: true },
       { id: 'b', text: 'A rest area ahead', correct: false },
@@ -359,7 +359,7 @@ const QUESTIONS = [
   {
     id: 'sign-026', category: 'road-signs', subcategory: 'regulatory-signs', difficulty: 'easy',
     text: 'A regulatory sign shows a bicycle inside a red circle with a slash. What does it mean?',
-    image_url: null,
+    image_url: 'assets/signs/manual/proh-no-bicycles.png',
     options: [
       { id: 'a', text: 'Bicycle crossing ahead', correct: false },
       { id: 'b', text: 'No bicycles allowed', correct: true },
@@ -372,7 +372,7 @@ const QUESTIONS = [
   {
     id: 'sign-027', category: 'road-signs', subcategory: 'regulatory-signs', difficulty: 'easy',
     text: 'What does a "No U-Turn" sign prohibit?',
-    image_url: null,
+    image_url: 'assets/signs/manual/proh-no-u-turn.png',
     options: [
       { id: 'a', text: 'Turning right', correct: false },
       { id: 'b', text: 'Making a complete turn to reverse direction', correct: true },
@@ -385,7 +385,7 @@ const QUESTIONS = [
   {
     id: 'sign-028', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign warns "Intersection Ahead — Turn Left or Right." What does it tell you?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-intersection-t.png',
     options: [
       { id: 'a', text: 'The road continues straight', correct: false },
       { id: 'b', text: 'The through road ends and you must turn left or right', correct: true },
@@ -398,7 +398,7 @@ const QUESTIONS = [
   {
     id: 'sign-029', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign reads "Passing Is Prohibited." What must you not do?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-no-passing.png',
     options: [
       { id: 'a', text: 'Change lanes', correct: false },
       { id: 'b', text: 'Pass other vehicles in that area', correct: true },
@@ -411,7 +411,7 @@ const QUESTIONS = [
   {
     id: 'sign-030', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign near a bridge reads "Vehicle Nearest the Bridge Has the Right of Way." What does it mean?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-narrow-bridge.png',
     options: [
       { id: 'a', text: 'The vehicle closest to a narrow bridge goes first', correct: true },
       { id: 'b', text: 'All vehicles must stop at the bridge', correct: false },
@@ -463,7 +463,7 @@ const QUESTIONS = [
   {
     id: 'sign-034', category: 'road-signs', subcategory: 'regulatory-signs', difficulty: 'medium',
     text: 'A regulatory sign reads "Observe Posted Speed Limit in School Zone During Restricted Hours." What must you do?',
-    image_url: null,
+    image_url: 'assets/signs/manual/reg-school-speed.png',
     options: [
       { id: 'a', text: 'Obey the reduced school-zone speed limit during the posted hours', correct: true },
       { id: 'b', text: 'Ignore it outside of winter', correct: false },
@@ -476,7 +476,7 @@ const QUESTIONS = [
   {
     id: 'sign-035', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'easy',
     text: 'A yellow diamond sign shows a railroad crossing symbol. What should you do?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-railroad.png',
     options: [
       { id: 'a', text: 'Speed up to beat any train', correct: false },
       { id: 'b', text: 'Be alert for trains and be prepared to stop', correct: true },
@@ -489,7 +489,7 @@ const QUESTIONS = [
   {
     id: 'sign-036', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'easy',
     text: 'A yellow diamond sign shows a pedestrian symbol. What does it warn?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-ped-crossing.png',
     options: [
       { id: 'a', text: 'A pedestrian crossing is ahead', correct: true },
       { id: 'b', text: 'Pedestrians are prohibited', correct: false },
@@ -502,7 +502,7 @@ const QUESTIONS = [
   {
     id: 'sign-037', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign shows a roundabout symbol. What does it mean?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-roundabout.png',
     options: [
       { id: 'a', text: 'A dead-end is ahead', correct: false },
       { id: 'b', text: 'A roundabout is ahead — slow down and prepare to yield', correct: true },
@@ -515,7 +515,7 @@ const QUESTIONS = [
   {
     id: 'sign-038', category: 'road-signs', subcategory: 'regulatory-signs', difficulty: 'easy',
     text: 'What does a "No Left Turn" sign prohibit?',
-    image_url: null,
+    image_url: 'assets/signs/manual/proh-no-left-turn.png',
     options: [
       { id: 'a', text: 'Turning left at that location', correct: true },
       { id: 'b', text: 'Going straight', correct: false },
@@ -528,7 +528,7 @@ const QUESTIONS = [
   {
     id: 'sign-039', category: 'road-signs', subcategory: 'warning-signs', difficulty: 'medium',
     text: 'A yellow diamond sign shows a road curving ahead. What is the appropriate response?',
-    image_url: null,
+    image_url: 'assets/signs/manual/warn-road-curves.png',
     options: [
       { id: 'a', text: 'Maintain or increase speed through the curve', correct: false },
       { id: 'b', text: 'Reduce speed and drive carefully through the curve', correct: true },
@@ -1161,9 +1161,15 @@ const QUESTIONS = [
   // These are the official BMV sample-test questions carried in verbatim from
   // https://www.bmv.ohio.gov/dl-sample-test.aspx. Each correct answer is also
   // confirmed against the Ohio Driver Manual (HSY 7607). Together with row-006,
-  // alc-001 and con-001 elsewhere in this file, this covers 9 of the 10 official
-  // sample questions. (The 10th — the four-lane school-bus question — is held
-  // out: the BMV sample key conflicts with ORC 4511.75 / the manual.)
+  // alc-001 and con-001 elsewhere in this file, this covers all 10 official
+  // sample questions.
+  //
+  // Note on bmv-006 (four-lane school bus): the live BMV sample test keys this
+  // to "only same-direction traffic must stop," which AGREES with ORC 4511.75
+  // and the manual (four-or-more-lane rule). An earlier WebFetch of the sample
+  // page reported the opposite ("either direction") — that was a fetch
+  // hallucination; the page shows no answer key. The keyed answer was verified
+  // directly on the live BMV test. No BMV/ORC conflict exists.
   {
     id: 'bmv-002', category: 'traffic-rules', subcategory: 'traffic-signals', difficulty: 'easy',
     text: 'A flashing red traffic signal at an intersection has the same requirements as which of the following?',
@@ -1241,5 +1247,18 @@ const QUESTIONS = [
     ],
     explanation: 'With no stop line or crosswalk, stop at the point nearest the intersecting roadway where you can see approaching traffic before entering it.',
     source: { document: 'Ohio BMV Sample Knowledge Test', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
+  },
+  {
+    id: 'bmv-006', category: 'traffic-rules', subcategory: 'school-buses', difficulty: 'medium',
+    text: 'When traveling on a highway divided into four traffic lanes, which vehicles are required to stop for a school bus that has stopped to unload children?',
+    image_url: null,
+    options: [
+      { id: 'a', text: 'Only vehicles approaching the rear of the bus traveling in the same direction as the bus', correct: true },
+      { id: 'b', text: 'All vehicles approaching the bus from either direction', correct: false },
+      { id: 'c', text: 'No one is required to stop unless children are in view', correct: false },
+      { id: 'd', text: 'All vehicles may pass the bus after providing an audible signal', correct: false },
+    ],
+    explanation: 'On a road with four or more lanes, only traffic proceeding in the same direction as the bus must stop (ORC 4511.75 / Ohio Driver Manual). On a road with fewer than four lanes, traffic from BOTH directions must stop. Verified against the live BMV sample-test answer key.',
+    source: { document: 'Ohio BMV Sample Knowledge Test (answer confirmed by ORC 4511.75 & Ohio Driver Manual)', badge: 'bmv-official-sample', url: 'https://www.bmv.ohio.gov/dl-sample-test.aspx' },
   },
 ];

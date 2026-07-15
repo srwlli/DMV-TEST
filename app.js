@@ -86,21 +86,34 @@ class DMVTestApp {
     const menuItems = document.querySelectorAll('.menu-item');
     const homeCards = document.querySelectorAll('.home-card[data-view]');
 
-    // Toggle mobile dropdown menu. CSS shows it via the `.visible` class
-    // (.mobile-menu is display:none by default, .mobile-menu.visible is flex).
+    // Toggle the header nav dropdown. Hidden by default (.hidden); clicking the
+    // hamburger reveals it anchored under the button. We register the
+    // outside-click closer with capture and skip any click on the toggle, so
+    // the opening click can't immediately close the menu.
     menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('visible');
+      const open = menu.classList.toggle('hidden') === false;
+      menuToggle.setAttribute('aria-expanded', String(open));
     });
 
-    // Persistent navbar links + mobile menu items + home cards all route
-    // through the same navigateTo() so every view renders its content.
+    // Close the dropdown when clicking anywhere outside it or the toggle.
+    document.addEventListener('click', (e) => {
+      if (menu.classList.contains('hidden')) return;
+      if (menuToggle.contains(e.target) || menu.contains(e.target)) return;
+      menu.classList.add('hidden');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    });
+
+    // Navbar links were removed in favor of the dropdown; navLinks is empty now
+    // but the forEach stays harmless. Menu items + home cards route through
+    // the same navigateTo() so every view renders its content.
     navLinks.forEach(link =>
       link.addEventListener('click', () => this.navigateTo(link.dataset.view)));
 
     menuItems.forEach(item =>
       item.addEventListener('click', () => {
         this.navigateTo(item.dataset.view);
-        menu.classList.remove('visible');
+        menu.classList.add('hidden');
+        menuToggle.setAttribute('aria-expanded', 'false');
       }));
 
     homeCards.forEach(card =>

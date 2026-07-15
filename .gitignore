@@ -1,1 +1,3 @@
-manual/
+# Top-level manual source (PDF/text/renders) only — anchored to repo root so it
+# does NOT match assets/signs/manual/ (the committed sign crops).
+/manual/
