@@ -240,11 +240,12 @@ class UIRenderer {
    */
   updateProgressRing(current, total) {
     const percent = Math.round((current / total) * 100);
-    const progressRing = document.getElementById('progressRing');
+    const progressFill = document.getElementById('progressRing');
     const questionCounter = document.getElementById('questionCounter');
 
-    progressRing.style.setProperty('--progress', percent);
-    questionCounter.textContent = `${current}/${total}`;
+    // Linear progress bar: fill width tracks how far through the quiz you are.
+    progressFill.style.width = `${percent}%`;
+    questionCounter.textContent = `${current} / ${total}`;
   }
 
   /**
@@ -484,12 +485,12 @@ class UIRenderer {
       categoryScoresEl.appendChild(item);
     });
 
-    // Weak areas
+    // Areas for improvement
     const weakAreas = await quizEngine.getWeakAreas(allQuestions);
     const weakAreasEl = document.getElementById('weakAreas');
 
     if (weakAreas.length > 0) {
-      weakAreasEl.innerHTML = '<h3 class="weak-areas-title"><i data-lucide="flame"></i> Weak Areas</h3>';
+      weakAreasEl.innerHTML = '<h3 class="weak-areas-title"><i data-lucide="flame"></i> Areas for Improvement</h3>';
       weakAreas.slice(0, 5).forEach(area => {
         const item = document.createElement('div');
         item.className = 'weak-area-item';
@@ -504,7 +505,7 @@ class UIRenderer {
       practiceBtn.disabled = false;
       practiceBtn.addEventListener('click', () => this.practiceWeakAreas(weakAreas, allQuestions));
     } else {
-      weakAreasEl.innerHTML = '<div class="no-weak-areas"><i data-lucide="check-circle"></i> No weak areas detected!</div>';
+      weakAreasEl.innerHTML = '<div class="no-weak-areas"><i data-lucide="check-circle"></i> No areas for improvement detected!</div>';
     }
     if (window.lucide) window.lucide.createIcons();
   }

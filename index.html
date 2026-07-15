@@ -8,7 +8,7 @@
 
   <title>Ohio DMV Test</title>
 
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/main.css?v=2">
   <link rel="stylesheet" href="styles/dark-mode.css">
 </head>
 <body>
@@ -46,10 +46,6 @@
       <!-- Home Screen -->
       <section id="homeView" class="view active">
         <div class="home-container">
-          <div class="home-hero">
-            <h2>Ohio DMV Test</h2>
-          </div>
-
           <div class="home-grid">
             <button class="home-card" id="startQuizBtn" data-view="quiz">
               <div class="card-icon"><i data-lucide="file-pen-line"></i></div>
@@ -73,18 +69,17 @@
           </div>
 
           <div class="resources-section">
-            <h3>Official Resources</h3>
-            <p>Straight from the Ohio BMV:</p>
+            <h4 class="resources-title">Official Ohio Resources</h4>
             <div class="resource-links">
               <a href="https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf"
                  target="_blank" rel="noopener noreferrer" class="resource-link">
                 <i data-lucide="book-marked"></i>
-                <span>Driver Manual (PDF)</span>
+                <span>Manual</span>
               </a>
               <a href="https://www.bmv.ohio.gov/dl-sample-test.aspx"
                  target="_blank" rel="noopener noreferrer" class="resource-link">
                 <i data-lucide="shield-check"></i>
-                <span>Official 10 Questions</span>
+                <span>10 Questions</span>
               </a>
             </div>
             <p class="resource-note">HSY 7607 — Digest of Ohio Motor Vehicle Laws, Ohio Department of Public Safety</p>
@@ -96,23 +91,17 @@
       <section id="quizView" class="view">
         <div class="quiz-container">
 
-          <div class="quiz-header">
-            <button class="quiz-hdr-btn" id="quizPrevBtn" aria-label="Previous question" disabled><i data-lucide="chevron-left"></i></button>
-            <div class="quiz-progress">
-              <div class="progress-ring" id="progressRing">
-                <span id="questionCounter">1/40</span>
-              </div>
-            </div>
-            <button class="quiz-hdr-btn" id="quizExitBtn" aria-label="Exit quiz"><i data-lucide="x"></i></button>
-          </div>
-
           <div class="quiz-content">
             <div class="question-card" id="questionCard">
-              <div class="question-badges">
-                <span class="question-category" id="qCategory">Road Signs</span>
-                <span class="official-badge hidden" id="qOfficialBadge">
-                  <i data-lucide="shield-check"></i> Official BMV
-                </span>
+
+              <!-- Card header row: back · progress bar + counter · exit -->
+              <div class="quiz-header">
+                <button class="quiz-hdr-btn" id="quizPrevBtn" aria-label="Previous question" disabled><i data-lucide="chevron-left"></i></button>
+                <div class="quiz-progress">
+                  <div class="progress-bar"><span class="progress-bar-fill" id="progressRing"></span></div>
+                  <span class="progress-count" id="questionCounter">1 / 40</span>
+                </div>
+                <button class="quiz-hdr-btn" id="quizExitBtn" aria-label="Exit quiz"><i data-lucide="x"></i></button>
               </div>
 
               <div class="question-image-container" id="qImageContainer">
@@ -132,6 +121,14 @@
               <div class="quiz-actions">
                 <button id="nextBtn" class="btn btn-primary" disabled>Submit <i data-lucide="check"></i></button>
                 <button id="skipBtn" class="btn btn-ghost">Skip</button>
+              </div>
+
+              <!-- Category badge(s): moved to the lower-right corner of the card -->
+              <div class="question-badges">
+                <span class="question-category" id="qCategory">Road Signs</span>
+                <span class="official-badge hidden" id="qOfficialBadge">
+                  <i data-lucide="shield-check"></i> Official BMV
+                </span>
               </div>
             </div>
           </div>
@@ -177,7 +174,7 @@
       <section id="progressView" class="view">
         <div class="progress-container">
 
-          <h2><i data-lucide="bar-chart-3"></i> My Progress</h2>
+          <h2><i data-lucide="bar-chart-3"></i> Results</h2>
 
           <div class="progress-summary">
             <div class="readiness-ring">
@@ -212,10 +209,10 @@
           </div>
 
           <div class="weak-areas" id="weakAreas">
-            <!-- Weak areas listed here -->
+            <!-- Areas for improvement listed here -->
           </div>
 
-          <button id="practiceWeakBtn" class="btn btn-primary" disabled><i data-lucide="flame"></i> Practice Weak Areas</button>
+          <button id="practiceWeakBtn" class="btn btn-primary" disabled><i data-lucide="flame"></i> Practice Areas for Improvement</button>
         </div>
       </section>
 
@@ -224,7 +221,6 @@
         <div class="about-container">
 
           <h2><i data-lucide="info"></i> About This App</h2>
-          <p class="subtitle">Where the study material comes from, and how it was built.</p>
 
           <div class="about-card">
             <h3><i data-lucide="book-marked"></i> The source material</h3>
@@ -298,9 +294,9 @@
         </div>
       </section>
 
-    </main>
-
-    <!-- Footer -->
+    <!-- Footer — inside .app-main so it scrolls with the content and sits at
+         the bottom of the page (not pinned to the viewport). margin-top:auto
+         still keeps it at the bottom on short pages. -->
     <footer class="app-footer">
       <div class="footer-links">
         <a href="https://dam.assets.ohio.gov/image/upload/publicsafety.ohio.gov/hsy7607.pdf"
@@ -317,6 +313,8 @@
         official manual before your test.
       </p>
     </footer>
+
+    </main>
 
   </div>
 
@@ -379,11 +377,11 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
 
   <!-- Scripts -->
-  <script src="data/questions.js" defer></script>
-  <script src="data/road-signs.js" defer></script>
-  <script src="data/study-categories.js" defer></script>
-  <script src="quiz-engine.js" defer></script>
-  <script src="ui.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="data/questions.js?v=2" defer></script>
+  <script src="data/road-signs.js?v=2" defer></script>
+  <script src="data/study-categories.js?v=2" defer></script>
+  <script src="quiz-engine.js?v=2" defer></script>
+  <script src="ui.js?v=2" defer></script>
+  <script src="app.js?v=2" defer></script>
 </body>
 </html>
