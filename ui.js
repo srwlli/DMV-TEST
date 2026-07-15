@@ -368,15 +368,19 @@ class UIRenderer {
    * Render home screen stats
    */
   async renderHomeStats() {
-    const sessions = await quizEngine.getSessions();
+    // The home-screen stats component (Best Score / Last Session / Streak) was
+    // removed. Stats now live on the Progress page. Guard against the missing
+    // elements so callers stay safe.
     const bestScoreEl = document.getElementById('bestScore');
     const lastSessionEl = document.getElementById('lastSession');
     const streakEl = document.getElementById('streak');
+    if (!bestScoreEl && !lastSessionEl && !streakEl) return;
 
+    const sessions = await quizEngine.getSessions();
     if (sessions.length === 0) {
-      bestScoreEl.textContent = '—';
-      lastSessionEl.textContent = '—';
-      streakEl.textContent = '0';
+      if (bestScoreEl) bestScoreEl.textContent = '—';
+      if (lastSessionEl) lastSessionEl.textContent = '—';
+      if (streakEl) streakEl.textContent = '0';
       return;
     }
 
@@ -384,9 +388,9 @@ class UIRenderer {
     const lastSession = new Date(sessions[sessions.length - 1].completed_at);
     const streak = await quizEngine.getStreak();
 
-    bestScoreEl.textContent = `${bestScore}%`;
-    lastSessionEl.textContent = this.formatDate(lastSession);
-    streakEl.textContent = streak;
+    if (bestScoreEl) bestScoreEl.textContent = `${bestScore}%`;
+    if (lastSessionEl) lastSessionEl.textContent = this.formatDate(lastSession);
+    if (streakEl) streakEl.textContent = streak;
   }
 
   /**
