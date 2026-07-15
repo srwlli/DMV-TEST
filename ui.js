@@ -21,6 +21,8 @@ class UIRenderer {
     const optionsGroup = document.getElementById('optionsGroup');
 
     qNumber.textContent = questionIndex + 1;
+    const qTotal = document.getElementById('qTotal');
+    if (qTotal) qTotal.textContent = session.questions.length;
     qCategory.textContent = question.category === 'road-signs' ? 'Road Sign' : 'Traffic Rules';
 
     // Show/hide image based on question type
@@ -190,11 +192,16 @@ class UIRenderer {
   updateNavigationButtons(index, total) {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const isLast = index === total - 1;
 
     prevBtn.disabled = index === 0;
-    nextBtn.disabled = index === total - 1;
 
-    if (index === total - 1) {
+    // Next/Submit is disabled until this question is answered (re-enabled in
+    // handleAnswerSubmit). The LAST question shows "Submit" but is NOT disabled
+    // just for being last — only the answered-gate controls it.
+    nextBtn.disabled = true;
+
+    if (isLast) {
       nextBtn.innerHTML = 'Submit Quiz <i data-lucide="check"></i>';
       nextBtn.classList.add('btn-success');
     } else {
@@ -246,7 +253,7 @@ class UIRenderer {
           </div>
           <div class="stat-row">
             <span>Passing Score:</span>
-            <span>30 / 40 (75%)</span>
+            <span>${Math.ceil(sessionData.questions_attempted * 0.75)} / ${sessionData.questions_attempted} (75%)</span>
           </div>
         </div>
 

@@ -302,16 +302,24 @@ class QuizEngine {
   }
 
   /**
-   * Select random questions (40 total: 20 signs + 20 rules)
+   * Select questions for a test. Aims for `count` (default 40) with a balanced
+   * signs/rules split, but ADAPTS to the pool: if one category is short, it
+   * backfills from the other so the test always has exactly min(count, pool)
+   * questions — never a phantom "40" the pool can't fill.
    */
   selectRandomQuestions(allQuestions, count = 40) {
-    const signs = allQuestions.filter(q => q.category === 'road-signs');
-    const rules = allQuestions.filter(q => q.category === 'traffic-rules');
+    const signs = this.shuffleArray(allQuestions.filter(q => q.category === 'road-signs'));
+    const rules = this.shuffleArray(allQuestions.filter(q => q.category === 'traffic-rules'));
 
-    const selectedSigns = this.shuffleArray([...signs]).slice(0, 20);
-    const selectedRules = this.shuffleArray([...rules]).slice(0, 20);
+    // Ideal balanced split, capped by what each category actually has.
+    const half = Math.floor(count / 2);
+    let takeSigns = Math.min(half, signs.length);
+    let takeRules = Math.min(count - takeSigns, rules.length);
+    // If rules were the limiter, try to backfill from remaining signs.
+    takeSigns = Math.min(signs.length, count - takeRules);
 
-    return this.shuffleArray([...selectedSigns, ...selectedRules]);
+    const selected = [...signs.slice(0, takeSigns), ...rules.slice(0, takeRules)];
+    return this.shuffleArray(selected);
   }
 
   /**
